@@ -150,28 +150,22 @@ extern s16 gAiBufferLengths[NUMAIBUFFERS];
 
 extern u32 gAudioRandom;
 
-#if defined(VERSION_US) || defined(VERSION_JP)
+#ifdef UCODE_LOW_PASS_FILTER
+#define LPF_UCODE_COMMANDS 3
+#else
+#define LPF_UCODE_COMMANDS 0
+#endif
+
+#define MAX_AUDIO_CMDS ALIGN16((MAX_SIMULTANEOUS_NOTES * (4 /* updatesPerFrame */ * (20 + LPF_UCODE_COMMANDS)) + 320) * sizeof(u64))
+
 #define NOTES_BUFFER_SIZE \
 ( \
-    MAX_SIMULTANEOUS_NOTES * ((4 /* updatesPerFrame */ * 20 * 2 * sizeof(u64)) \
-    + ALIGN16(sizeof(struct Note)) \
+    MAX_SIMULTANEOUS_NOTES * (ALIGN16(sizeof(struct Note)) \
     + (DMA_BUF_SIZE_0 * 3) \
     + DMA_BUF_SIZE_1 \
     + ALIGN16(sizeof(struct NoteSynthesisBuffers))) \
-    + (320 * 2 * sizeof(u64)) /* gMaxAudioCmds */ \
+    + (2 * MAX_AUDIO_CMDS) \
 )
-#else // Probably SH incompatible but that's an entirely different headache to save at this point tbh
-#define NOTES_BUFFER_SIZE \
-( \
-    MAX_SIMULTANEOUS_NOTES * ((4 /* updatesPerFrame */ * 0x10 * 2 * sizeof(u64)) \
-    + ALIGN16(sizeof(struct Note)) \
-    + (DMA_BUF_SIZE_0 * 3 * 1 /* presetUnk4 */) \
-    + (DMA_BUF_SIZE_1) \
-    + ALIGN16(sizeof(struct NoteSynthesisBuffers)) \
-    + ALIGN16(4 /* updatesPerFrame */ * sizeof(struct NoteSubEu))) \
-    + ((0x300 + (4 /* numReverbs */ * 0x20)) * 2 * sizeof(u64)) /* gMaxAudioCmds */ \
-)
-#endif
 
 #ifdef VERSION_SH
 extern f32 unk_sh_data_1[];

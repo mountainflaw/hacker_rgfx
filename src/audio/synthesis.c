@@ -772,6 +772,16 @@ u64 *synthesis_process_notes(s16 *aiBuf, u32 bufLen, u64 *cmd) {
             aSetBuffer(cmd++, /*flags*/ 0, noteSamplesDmemAddrBeforeResampling, /*dmemout*/ DMEM_ADDR_TEMP, bufLen);
             aResample(cmd++, flags, resamplingRateFixedPoint, VIRTUAL_TO_PHYSICAL2(note->synthesisBuffers->finalResampleState));
 
+#ifdef UCODE_LOW_PASS_FILTER
+            if (note->lpf.intensity != 0) {
+                aSetBuffer(cmd++, 0, DMEM_ADDR_TEMP, DMEM_ADDR_TEMP, bufLen);
+                aLoadADPCM(cmd++, sizeof(note->lpf.coefunion.coef), VIRTUAL_TO_PHYSICAL(note->lpf.coefunion.coef));
+                aPoleFilter(cmd++, note->lpf.noteInit, note->lpf.gain, VIRTUAL_TO_PHYSICAL(note->lpf.state));
+                note->lpf.noteInit = FALSE;
+                curLoadedBook = NULL;
+            }
+#endif
+
 #ifdef ENABLE_STEREO_HEADSET_EFFECTS
             if (note->headsetPanRight != 0 || note->prevHeadsetPanRight != 0) {
                 leftRight = 1;
@@ -1033,6 +1043,38 @@ u64 *note_apply_headset_pan_effects(u64 *cmd, struct Note *note, s32 bufLen, s32
 }
 #endif
 
+#ifdef UCODE_LOW_PASS_FILTER
+// NOTE: This also functions as a high-pass filter if given negative intensity values!
+void note_init_lpf(struct AudioLPFilter *lpf, s16 intensity, s32 isNoteInit) {
+#define LPF_SCALE 16384 // Not configurable
+    s32	i;
+    s32 tmp;
+    f32	mult;
+    f32 coef;
+    s16	diff;
+
+    lpf->noteInit = isNoteInit;
+    lpf->intensity = intensity;
+    tmp = intensity * LPF_SCALE;
+    diff = tmp >> 15;
+    lpf->gain = LPF_SCALE - ABS(diff);
+    for (i = 0; i < 8; i++) {
+        lpf->coefunion.coef[i] = 0;
+    }
+    
+    mult = (f32) diff / LPF_SCALE;
+    coef = mult;
+    for (; i < 16; i++){
+        lpf->coefunion.coef[i] = (s16) (coef * LPF_SCALE);
+        coef *= mult;
+    }
+
+    if (isNoteInit) {
+        bzero(lpf->state, sizeof(lpf->state));
+    }
+}
+#endif
+
 void note_init_volume(struct Note *note) {
     note->targetVolLeft = 0;
     note->targetVolRight = 0;
@@ -1124,6 +1166,10 @@ void note_enable(struct Note *note) {
     note->headsetPanRight = 0;
     note->prevHeadsetPanRight = 0;
     note->prevHeadsetPanLeft = 0;
+#endif
+
+#ifdef UCODE_LOW_PASS_FILTER
+    note_init_lpf(&note->lpf, 0, TRUE); // This may be run at any given time
 #endif
 }
 

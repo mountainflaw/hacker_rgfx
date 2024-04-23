@@ -204,6 +204,19 @@ struct AudioBankSound {
     f32 tuning; // frequency scale factor
 }; // size = 0x8
 
+#ifdef UCODE_LOW_PASS_FILTER
+struct AudioLPFilter {
+    union {
+        s16     coef[16];
+        s64     alignment;
+    } coefunion;
+    POLEF_STATE	state;
+    s16	        intensity;
+    s16	        gain;
+    s32         noteInit;
+};
+#endif
+
 struct Instrument {
     /*0x00*/ u8 loaded;
     /*0x01*/ u8 normalRangeLo;
@@ -706,6 +719,9 @@ struct Note {
     /*0x8C*/ struct AudioListItem listItem;
     /*0x9C*/ s16 curVolLeft; // Q1.15, but will always be non-negative
     /*0x9E*/ s16 curVolRight; // Q1.15, but will always be non-negative
+#ifdef UCODE_LOW_PASS_FILTER
+    /*0xA0*/ struct AudioLPFilter lpf; // size: 0x30
+#endif
 #ifdef ENABLE_STEREO_HEADSET_EFFECTS
     /*0xA0*/ u16 headsetPanRight;
     /*0xA2*/ u16 headsetPanLeft;
@@ -713,7 +729,7 @@ struct Note {
     /*0xA6*/ u16 prevHeadsetPanLeft;
     /*    */ u8 align16Padding[0x08];
 #endif
-}; // size = 0xA0, 0xB0
+};
 #endif
 
 struct NoteSynthesisBuffers {

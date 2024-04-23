@@ -70,7 +70,6 @@ struct AudioBufferParametersEU gAudioBufferParameters;
 s32 gAiFrequency;
 #endif
 
-s32 gMaxAudioCmds;
 s32 gMaxSimultaneousNotes;
 
 #if defined(VERSION_EU)

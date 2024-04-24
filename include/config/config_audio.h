@@ -48,7 +48,7 @@
 /**
  * Add support for a low-pass filter processed by the RSP on a per-note basis. Note this may also be used as a high-pass filter.
  */
-// #define UCODE_LOW_PASS_FILTER
+#define UCODE_LOW_PASS_FILTER
 
 /** 
  * Uses a much better implementation of reverb over vanilla's fake echo reverb. Great for caves or eerie levels, as well as just a better audio experience in general.

@@ -205,15 +205,14 @@ struct AudioBankSound {
 }; // size = 0x8
 
 #ifdef UCODE_LOW_PASS_FILTER
+// NOTE: State and coefs MUST be pointers to arrays separated from this struct.
+// Not doing this is signing yourself up for a VERY fun time with the cache...
 struct AudioLPFilter {
-    union {
-        s16     coef[16];
-        s64     alignment;
-    } coefunion;
-    POLEF_STATE	state;
-    s16	        intensity;
-    s16	        gain;
-    s32         noteInit;
+    s16 intensity;
+    s16 gain;
+    s32 noteInit;
+    s16 *state;
+    s16 *coefs;
 };
 #endif
 
@@ -720,7 +719,7 @@ struct Note {
     /*0x9C*/ s16 curVolLeft; // Q1.15, but will always be non-negative
     /*0x9E*/ s16 curVolRight; // Q1.15, but will always be non-negative
 #ifdef UCODE_LOW_PASS_FILTER
-    /*0xA0*/ struct AudioLPFilter lpf; // size: 0x30
+    /*0xA0*/ struct AudioLPFilter lpf; // size: 0x10
 #endif
 #ifdef ENABLE_STEREO_HEADSET_EFFECTS
     /*0xA0*/ u16 headsetPanRight;
@@ -746,6 +745,11 @@ struct NoteSynthesisBuffers {
     s16 dummyResampleState[0x10];
 #if defined(VERSION_JP) || defined(VERSION_US)
     s16 samples[0x40];
+#endif
+#ifdef UCODE_LOW_PASS_FILTER
+    // Actual lpf state and coefficient data goes here.
+    s16 lpfState[0x8];
+    s16 lpfCoefs[0x10];
 #endif
 #endif
 };

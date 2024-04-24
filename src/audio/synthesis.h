@@ -173,6 +173,19 @@ extern struct SynthesisReverb gSynthesisReverb;
 extern s16 D_SH_803479B4;
 #endif
 
+#ifdef UCODE_LOW_PASS_FILTER
+struct GlobalLPFilter {
+    struct AudioLPFilter lpf;
+    s16 state[0x8];
+    s16 coefs[0x10];
+    const s32 dataOffset;
+    u8 pad[0xC];
+};
+
+extern struct GlobalLPFilter gGlobalLPFs[SYNTH_CHANNEL_STEREO_COUNT];
+void note_init_lpf(struct AudioLPFilter *lpf, s16 intensity, s32 isNoteInit, s16 *state, s16 *coefs);
+#endif
+
 u64 *synthesis_execute(u64 *cmdBuf, s32 *writtenCmds, s16 *aiBuf, s32 bufLen);
 #if defined(VERSION_JP) || defined(VERSION_US)
 void note_init_volume(struct Note *note);

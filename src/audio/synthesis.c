@@ -44,6 +44,7 @@ ALIGNED16 struct GlobalLPFilter gGlobalLPFs[SYNTH_CHANNEL_STEREO_COUNT] = {
     [SYNTH_CHANNEL_LEFT ] = {.dataOffset = DMEM_ADDR_LEFT_CH },
     [SYNTH_CHANNEL_RIGHT] = {.dataOffset = DMEM_ADDR_RIGHT_CH},
 };
+    ALIGNED16 volatile s16 gFilterIntensity = 0;
 #endif
 
 
@@ -1192,7 +1193,7 @@ void note_enable(struct Note *note) {
 #endif
 
 #ifdef UCODE_LOW_PASS_FILTER
-    note_init_lpf(&note->lpf, 0, TRUE, note->synthesisBuffers->lpfState, note->synthesisBuffers->lpfCoefs); // This may be run at any given time
+    note_init_lpf(&note->lpf, gFilterIntensity, TRUE, note->synthesisBuffers->lpfState, note->synthesisBuffers->lpfCoefs); // This may be run at any given time
 #endif
 }
 

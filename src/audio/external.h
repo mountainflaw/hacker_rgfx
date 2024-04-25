@@ -75,4 +75,5 @@ void sound_reset(u8 reverbPresetId);
 
 void audio_init(void); // in load.c
 
+extern ALIGNED16 volatile s16 gFilterIntensity;
 #endif // AUDIO_EXTERNAL_H

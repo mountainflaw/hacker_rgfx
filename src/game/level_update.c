@@ -32,6 +32,9 @@
 #include "puppyprint.h"
 #include "level_commands.h"
 
+#include "audio/external.h"
+#include "print.h"
+
 #include "config.h"
 
 // TODO: Make these ifdefs better
@@ -977,7 +980,6 @@ void basic_update(void) {
         update_camera(gCurrentArea->camera);
     }
 }
-
 s32 play_mode_normal(void) {
 #ifndef DISABLE_DEMO
     if (gCurrDemoInput != NULL) {
@@ -1024,6 +1026,11 @@ s32 play_mode_normal(void) {
 #else
         update_camera(gCurrentArea->camera);
 #endif
+        if (find_water_level(gLakituState.pos[0], gLakituState.pos[2]) > gLakituState.pos[1] && gMarioState->action & ACT_FLAG_SWIMMING) {
+            gFilterIntensity = 26000;
+        } else {
+            gFilterIntensity = 0;
+        }
     }
 
     initiate_painting_warp();
@@ -1044,8 +1051,7 @@ s32 play_mode_normal(void) {
             gCameraMovementFlags |= CAM_MOVE_PAUSE_SCREEN;
             set_play_mode(PLAY_MODE_PAUSED);
         }
-    }
-    
+    }  
     return FALSE;
 }
 
@@ -1076,6 +1082,7 @@ s32 play_mode_paused(void) {
         gCameraMovementFlags &= ~CAM_MOVE_PAUSE_SCREEN;
 #endif
     }
+    gFilterIntensity = 0;
 
     return FALSE;
 }

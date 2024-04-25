@@ -2337,6 +2337,15 @@ const Gfx dl_shade_screen_begin[] = {
     gsSPEndDisplayList(),
 };
 
+const Gfx dl_shade_screen_water_begin[] = {
+    gsDPPipeSync(),
+    gsDPSetRenderMode(G_RM_CLD_SURF, G_RM_CLD_SURF2),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetPrimColor(0, 0, 0, 0, 255, 64),
+    gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
+    gsSPEndDisplayList(),
+};
+
 const Gfx dl_shade_screen_end[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),

@@ -27,6 +27,8 @@
 #include "puppycam2.h"
 #include "main.h"
 
+#include "engine/surface_collision.h"
+
 #ifdef VERSION_EU
 #undef LANGUAGE_FUNCTION
 #define LANGUAGE_FUNCTION gInGameLanguage
@@ -1467,6 +1469,19 @@ void change_dialog_camera_angle(void) {
     }
 }
 
+extern const Gfx dl_shade_screen_water_begin[];
+
+void shade_screen_blue(void) {
+    Gfx* dlHead = gDisplayListHead;
+
+    gSPDisplayList(dlHead++, dl_shade_screen_water_begin);
+    gDPFillRectangle(dlHead++, GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), gBorderHeight,
+        (GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1), ((SCREEN_HEIGHT - gBorderHeight) - 1));
+    gSPDisplayList(dlHead++, dl_shade_screen_end);
+
+    gDisplayListHead = dlHead;
+}
+
 void shade_screen(void) {
     Gfx* dlHead = gDisplayListHead;
 
@@ -2199,6 +2214,10 @@ s32 render_menus_and_dialogs(void) {
     s32 mode = MENU_OPT_NONE;
 
     create_dl_ortho_matrix();
+
+    if (find_water_level(gLakituState.pos[0], gLakituState.pos[2]) > gLakituState.pos[1]) {
+        shade_screen_blue();
+    } 
 
     if (gMenuMode != MENU_MODE_NONE) {
         switch (gMenuMode) {

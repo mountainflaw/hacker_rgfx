@@ -33,7 +33,6 @@
 #include "level_commands.h"
 
 #include "audio/external.h"
-#include "print.h"
 
 #include "config.h"
 
@@ -980,6 +979,7 @@ void basic_update(void) {
         update_camera(gCurrentArea->camera);
     }
 }
+
 s32 play_mode_normal(void) {
 #ifndef DISABLE_DEMO
     if (gCurrDemoInput != NULL) {
@@ -1026,7 +1026,7 @@ s32 play_mode_normal(void) {
 #else
         update_camera(gCurrentArea->camera);
 #endif
-        if (find_water_level(gLakituState.pos[0], gLakituState.pos[2]) > gLakituState.pos[1] && gMarioState->action & ACT_FLAG_SWIMMING) {
+        if (find_water_level(gLakituState.pos[0], gLakituState.pos[2]) > gLakituState.pos[1]) {
             gFilterIntensity = 26000;
         } else {
             gFilterIntensity = 0;

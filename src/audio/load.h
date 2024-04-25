@@ -48,7 +48,6 @@ extern s32 gAiFrequency;
 extern s16 gCurrAiBufferLength;
 extern s32 D_SH_8034F68C;
 #endif
-extern s32 gMaxAudioCmds;
 
 extern s32 gMaxSimultaneousNotes;
 extern s32 gSamplesPerFrameTarget;

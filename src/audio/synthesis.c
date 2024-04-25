@@ -39,6 +39,13 @@
 
 #define VOLRAMPING_MASK (~(0x8000 | ((1 << (15 - VOL_RAMPING_EXPONENT)) - 1)))
 
+#ifdef UCODE_LOW_PASS_FILTER
+ALIGNED16 struct GlobalLPFilter gGlobalLPFs[SYNTH_CHANNEL_STEREO_COUNT] = {
+    [SYNTH_CHANNEL_LEFT ] = {.dataOffset = DMEM_ADDR_LEFT_CH },
+    [SYNTH_CHANNEL_RIGHT] = {.dataOffset = DMEM_ADDR_RIGHT_CH},
+};
+#endif
+
 
 #ifdef BETTER_REVERB
 // Do not touch these values manually, unless you want potential for problems.
@@ -772,6 +779,16 @@ u64 *synthesis_process_notes(s16 *aiBuf, u32 bufLen, u64 *cmd) {
             aSetBuffer(cmd++, /*flags*/ 0, noteSamplesDmemAddrBeforeResampling, /*dmemout*/ DMEM_ADDR_TEMP, bufLen);
             aResample(cmd++, flags, resamplingRateFixedPoint, VIRTUAL_TO_PHYSICAL2(note->synthesisBuffers->finalResampleState));
 
+#ifdef UCODE_LOW_PASS_FILTER
+            if (note->lpf.intensity != 0) {
+                aSetBuffer(cmd++, 0, DMEM_ADDR_TEMP, DMEM_ADDR_TEMP, bufLen);
+                aLoadADPCM(cmd++, sizeof(note->synthesisBuffers->lpfCoefs), VIRTUAL_TO_PHYSICAL(note->lpf.coefs));
+                aPoleFilter(cmd++, note->lpf.noteInit, note->lpf.gain, VIRTUAL_TO_PHYSICAL(note->lpf.state));
+                note->lpf.noteInit = FALSE;
+                curLoadedBook = NULL;
+            }
+#endif
+
 #ifdef ENABLE_STEREO_HEADSET_EFFECTS
             if (note->headsetPanRight != 0 || note->prevHeadsetPanRight != 0) {
                 leftRight = 1;
@@ -795,6 +812,18 @@ u64 *synthesis_process_notes(s16 *aiBuf, u32 bufLen, u64 *cmd) {
 #endif
         }
     }
+
+#ifdef UCODE_LOW_PASS_FILTER
+    for (temp = 0; temp < ARRAY_COUNT(gGlobalLPFs); temp++) {
+        if (gGlobalLPFs[temp].lpf.intensity != 0) {
+            struct GlobalLPFilter *filter = &gGlobalLPFs[temp];
+            aSetBuffer(cmd++, 0, filter->dataOffset, filter->dataOffset, bufLen);
+            aLoadADPCM(cmd++, sizeof(filter->coefs), VIRTUAL_TO_PHYSICAL2(filter->coefs));
+            aPoleFilter(cmd++, filter->lpf.noteInit, filter->lpf.gain, VIRTUAL_TO_PHYSICAL2(filter->state));
+            filter->lpf.noteInit = FALSE;
+        }
+    }
+#endif
 
     aSetBuffer(cmd++, 0, 0, DMEM_ADDR_TEMP, bufLen);
     aInterleave(cmd++, DMEM_ADDR_LEFT_CH, DMEM_ADDR_RIGHT_CH);
@@ -1033,6 +1062,42 @@ u64 *note_apply_headset_pan_effects(u64 *cmd, struct Note *note, s32 bufLen, s32
 }
 #endif
 
+#ifdef UCODE_LOW_PASS_FILTER
+// NOTE: This also functions as a high-pass filter if given negative intensity values!
+void note_init_lpf(struct AudioLPFilter *lpf, s16 intensity, s32 isNoteInit, s16 *state, s16 *coefs) {
+#define LPF_SCALE 16384 // Not configurable
+    s32	i;
+    s32 tmp;
+    f32	mult;
+    f32 coef;
+    s16	diff;
+
+    s16 tmpCoefs[16];
+
+    lpf->noteInit = isNoteInit;
+    lpf->intensity = intensity;
+    tmp = intensity * LPF_SCALE;
+    diff = tmp >> 15;
+    lpf->gain = LPF_SCALE - ABS(diff);
+    for (i = 0; i < 8; i++) {
+        tmpCoefs[i] = 0;
+    }
+    
+    mult = (f32) diff / LPF_SCALE;
+    coef = mult;
+    for (; i < 16; i++){
+        tmpCoefs[i] = (s16) (coef * LPF_SCALE);
+        coef *= mult;
+    }
+
+    // Do not cache coefs
+    bcopy(tmpCoefs, K0_TO_K1(coefs), sizeof(tmpCoefs));
+
+    lpf->state = state;
+    lpf->coefs = coefs;
+}
+#endif
+
 void note_init_volume(struct Note *note) {
     note->targetVolLeft = 0;
     note->targetVolRight = 0;
@@ -1124,6 +1189,10 @@ void note_enable(struct Note *note) {
     note->headsetPanRight = 0;
     note->prevHeadsetPanRight = 0;
     note->prevHeadsetPanLeft = 0;
+#endif
+
+#ifdef UCODE_LOW_PASS_FILTER
+    note_init_lpf(&note->lpf, 0, TRUE, note->synthesisBuffers->lpfState, note->synthesisBuffers->lpfCoefs); // This may be run at any given time
 #endif
 }
 

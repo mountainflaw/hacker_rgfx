@@ -70,7 +70,6 @@ struct AudioBufferParametersEU gAudioBufferParameters;
 s32 gAiFrequency;
 #endif
 
-s32 gMaxAudioCmds;
 s32 gMaxSimultaneousNotes;
 
 #if defined(VERSION_EU)
@@ -895,5 +894,11 @@ void audio_init() {
 #endif
     osSyncPrintf(" audiodata :[%6d]\n", gMusicData - gSoundDataRaw); // gSoundDataRaw
     osSyncPrintf("---------------------------------------\n");
+
+#ifdef UCODE_LOW_PASS_FILTER
+    for (i = 0; i < ARRAY_COUNT(gGlobalLPFs); i++) {
+        note_init_lpf(&gGlobalLPFs[i].lpf, 0, TRUE, gGlobalLPFs[i].state, gGlobalLPFs[i].coefs);
+    }
+#endif
 }
 #endif

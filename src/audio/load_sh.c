@@ -91,7 +91,6 @@ struct CtlEntry *gCtlEntries;
 
 struct AudioBufferParametersEU gAudioBufferParameters;
 u32 sDmaBufSize;
-s32 gMaxAudioCmds;
 s32 gMaxSimultaneousNotes;
 
 s16 gTempoInternalToExternal;

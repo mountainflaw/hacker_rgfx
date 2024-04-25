@@ -2340,9 +2340,10 @@ const Gfx dl_shade_screen_begin[] = {
 const Gfx dl_shade_screen_water_begin[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_CLD_SURF, G_RM_CLD_SURF2),
+    gsDPSetAlphaDither(G_AD_NOISE),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetPrimColor(0, 0, 0, 0, 255, 64),
-    gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
+    gsDPSetCombineLERP(NOISE, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, NOISE, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE),
     gsSPEndDisplayList(),
 };
 
@@ -2350,6 +2351,7 @@ const Gfx dl_shade_screen_end[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
+    gsDPSetAlphaDither(G_AD_PATTERN),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
     gsSPEndDisplayList(),
 };

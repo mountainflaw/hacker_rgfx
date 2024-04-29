@@ -75,6 +75,7 @@ def pack(fmt, *args):
         fmt = fmt.replace("P", "I").replace("X", "")
     else:
         fmt = fmt.replace("P", "Q").replace("X", "xxxx")
+    print(fmt, args)
     return struct.pack(ENDIAN_MARKER + fmt, *args)
 
 
@@ -305,9 +306,11 @@ def normalize_sound_json(json):
             for drum in inst:
                 fixup.append((drum, "sound"))
         else:
+            fixup.append((inst, "sound_lower"))
             fixup.append((inst, "sound_lo"))
             fixup.append((inst, "sound"))
             fixup.append((inst, "sound_hi"))
+            fixup.append((inst, "sound_higher"))
     for (obj, key) in fixup:
         if isinstance(obj, dict) and isinstance(obj.get(key), str):
             obj[key] = {"sample": obj[key]}
@@ -380,7 +383,7 @@ def validate_bank(json, sample_bank):
 
     for name, inst in instruments:
         forstr = "instrument " + name
-        for lohi in ["lo", "hi"]:
+        for lohi in ["lower", "lo", "hi", "higher"]:
             nr = "normal_range_" + lohi
             so = "sound_" + lohi
             if nr in inst:
@@ -389,21 +392,29 @@ def validate_bank(json, sample_bank):
                 validate(nr in inst, so + " is specified, but not " + nr, forstr)
             else:
                 inst[so] = no_sound
+        if "normal_range_lower" not in inst:
+            inst["normal_range_lower"] = 0
         if "normal_range_lo" not in inst:
             inst["normal_range_lo"] = 0
         if "normal_range_hi" not in inst:
             inst["normal_range_hi"] = 127
+        if "normal_range_higher" not in inst:
+            inst["normal_range_higher"] = 127
 
         validate_json_format(
             inst,
             {
                 "release_rate": [0, 255],
                 "envelope": str,
+                "normal_range_lower": [0, 127],
                 "normal_range_lo": [0, 127],
                 "normal_range_hi": [0, 127],
+                "normal_range_higher": [0, 127],
+                "sound_lower": dict,
                 "sound_lo": dict,
                 "sound": dict,
                 "sound_hi": dict,
+                "sound_higher": dict,
             },
             forstr,
         )
@@ -420,12 +431,21 @@ def validate_bank(json, sample_bank):
             "normal_range_lo > normal_range_hi",
             forstr,
         )
+
+        validate(inst["normal_range_lower"] <= inst["normal_range_lo"],
+                "normal_range_lower > normal_range_lo",
+                forstr) 
+
+        validate(inst["normal_range_hi"] <= inst["normal_range_higher"],
+                "normal_range_hi > normal_range_higher",
+                forstr)
+
         validate(
             inst["envelope"] in json["envelopes"],
             "reference to non-existent envelope " + inst["envelope"],
             forstr,
         )
-        for key in ["sound_lo", "sound", "sound_hi"]:
+        for key in ["sound_lower", "sound_lo", "sound", "sound_hi", "sound_higher"]:
             if inst[key] is no_sound:
                 del inst[key]
             else:
@@ -494,11 +514,15 @@ def mark_sample_bank_uses(bank):
             for drum in inst:
                 mark_used(drum["sound"]["sample"])
         else:
+            if "sound_lower" in inst:
+                mark_used(inst["sound_lo"]["sample"])
             if "sound_lo" in inst:
                 mark_used(inst["sound_lo"]["sample"])
             mark_used(inst["sound"]["sample"])
             if "sound_hi" in inst:
                 mark_used(inst["sound_hi"]["sample"])
+            if "sound_higher" in inst:
+                mark_used(inst["sound_lo"]["sample"])
 
 
 def serialize_ctl(bank, base_ser, is_shindou):
@@ -541,11 +565,15 @@ def serialize_ctl(bank, base_ser, is_shindou):
             for drum in inst:
                 used_samples.append(drum["sound"]["sample"])
         else:
+            if "sound_lower" in inst:
+                used_samples.append(inst["sound_lower"]["sample"])
             if "sound_lo" in inst:
                 used_samples.append(inst["sound_lo"]["sample"])
             used_samples.append(inst["sound"]["sample"])
             if "sound_hi" in inst:
                 used_samples.append(inst["sound_hi"]["sample"])
+            if "sound_higher" in inst:
+                used_samples.append(inst["sound_higher"]["sample"])
 
     sample_name_to_addr = {}
     for name in used_samples:
@@ -622,17 +650,21 @@ def serialize_ctl(bank, base_ser, is_shindou):
         env_addr = env_name_to_addr[inst["envelope"]]
         ser.add(
             pack(
-                "BBBBXP",
+                "BBBBBBXP",
                 0,
+                inst.get("normal_range_lower", 0),
                 inst.get("normal_range_lo", 0),
                 inst.get("normal_range_hi", 127),
+                inst.get("normal_range_higher", 127),
                 inst["release_rate"],
                 env_addr,
             )
         )
+        ser_sound(inst.get("sound_lower", no_sound))
         ser_sound(inst.get("sound_lo", no_sound))
         ser_sound(inst["sound"])
         ser_sound(inst.get("sound_hi", no_sound))
+        ser_sound(inst.get("sound_higher", no_sound))
     ser.align(16)
 
     for name in json["instrument_list"]:

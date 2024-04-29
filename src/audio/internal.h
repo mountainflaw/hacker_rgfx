@@ -206,13 +206,17 @@ struct AudioBankSound {
 
 struct Instrument {
     /*0x00*/ u8 loaded;
+    /*0x01*/ u8 normalRangeLower;
     /*0x01*/ u8 normalRangeLo;
     /*0x02*/ u8 normalRangeHi;
+    /*0x01*/ u8 normalRangeHigher;
     /*0x03*/ u8 releaseRate;
     /*0x04*/ struct AdsrEnvelope *envelope;
+    /*0x08*/ struct AudioBankSound lowerNotesSound;
     /*0x08*/ struct AudioBankSound lowNotesSound;
     /*0x10*/ struct AudioBankSound normalNotesSound;
     /*0x18*/ struct AudioBankSound highNotesSound;
+    /*0x08*/ struct AudioBankSound higherNotesSound;
 }; // size = 0x20
 
 struct Drum {

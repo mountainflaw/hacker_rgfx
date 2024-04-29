@@ -438,9 +438,11 @@ void patch_audio_bank(struct AudioBank *mem, u8 *offset, u32 numInstruments, u32
                 instrument = *itInstrs;
 
                 if (!instrument->loaded) {
+                    PATCH_SOUND(&instrument->lowerNotesSound,    (u8 *) mem, offset);
                     PATCH_SOUND(&instrument->lowNotesSound,    (u8 *) mem, offset);
                     PATCH_SOUND(&instrument->normalNotesSound, (u8 *) mem, offset);
                     PATCH_SOUND(&instrument->highNotesSound,   (u8 *) mem, offset);
+                    PATCH_SOUND(&instrument->higherNotesSound,   (u8 *) mem, offset);
                     patched = instrument->envelope;
                     instrument->envelope = BASE_OFFSET(mem, patched);
                     instrument->loaded = TRUE;

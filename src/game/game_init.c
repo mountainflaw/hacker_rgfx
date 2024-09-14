@@ -301,7 +301,7 @@ void create_gfx_task_structure(void) {
         #else
             GRUCODE_TASK(F3DEX3_BrW);
         #endif
-    #elif F3D_VERSION == 4 // F3DEX3 LVP
+    #elif F3DEX_VERSION == 4 // F3DEX3 LVP
         #if defined(DEBUG_F3DEX3_PROFILER)
             switch (gF3DEX3ProfilerPage) {
                 case 4: GRUCODE_TASK(F3DEX3_BrW_LVP_PC); break;

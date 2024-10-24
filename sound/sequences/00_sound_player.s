@@ -6991,24 +6991,24 @@ sound_ref .sound_menu_camera_turn
 sound_ref .sound_menu_critical_error
 
 .layer_critical_error_0:
-layer_note1 3, 0x7f, 115 
+layer_note1 3, 0x3f, 115
 layer_end
 
 .layer_critical_error_1:
-layer_note1 15, 0x7f, 115 
+layer_note1 15, 0x3f, 115 
 layer_end
 
 .layer_critical_error_2:
-layer_note1 27, 0x7f, 115 
+layer_note1 34, 0x3f, 115 
 layer_end
 
 .layer_critical_error_3:
-layer_note1 39, 0x7f, 115 
+layer_note1 39, 0x3f, 115 
 layer_end
 
 .sound_menu_critical_error:
 chan_setbank 9
-chan_setinstr  1
+chan_setinstr 0
 chan_setenvelope .envelope_340C
 chan_setlayer 0, .layer_critical_error_0
 chan_setlayer 1, .layer_critical_error_1

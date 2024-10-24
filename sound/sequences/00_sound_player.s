@@ -7007,8 +7007,8 @@ layer_note1 39, 0x7f, 115
 layer_end
 
 .sound_menu_critical_error:
-chan_setbank 11
-chan_setinstr 14
+chan_setbank 9
+chan_setinstr  1
 chan_setenvelope .envelope_340C
 chan_setlayer 0, .layer_critical_error_0
 chan_setlayer 1, .layer_critical_error_1

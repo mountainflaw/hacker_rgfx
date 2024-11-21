@@ -154,19 +154,19 @@ SECTIONS
 
 #if (defined(F3DEX_GBI_3))
    #if F3DEX_VERSION == 3
-      lib/PR/f3dex3/gspF3DEX3.BrW.fifo.o(.text*);
+      lib/PR/f3dex3/gspF3DEX3_BrW.o(.text*);
       #if (defined(DEBUG_F3DEX3_PROFILER))
-         lib/PR/f3dex3/gspF3DEX3.BrW.PA.fifo.o(.text*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.PB.fifo.o(.text*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.PC.fifo.o(.text*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_PA.o(.text*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_PB.o(.text*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_PC.o(.text*);
       #endif
 
    #elif F3DEX_VERSION == 4
-      lib/PR/f3dex3/gspF3DEX3.BrW.LVP.fifo.o(.text*);
+      lib/PR/f3dex3/gspF3DEX3_BrW_LVP.o(.text*);
       #if (defined(DEBUG_F3DEX3_PROFILER))
-         lib/PR/f3dex3/gspF3DEX3.BrW.LVP.PA.fifo.o(.text*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.LVP.PB.fifo.o(.text*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.LVP.PC.fifo.o(.text*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_LVP_PA.o(.text*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_LVP_PB.o(.text*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_LVP_PC.o(.text*);
       #endif
    #else
       #error "Invalid F3DEX3 selection."
@@ -207,18 +207,18 @@ SECTIONS
 
 #if (defined(F3DEX_GBI_3))
    #if F3DEX_VERSION == 3
-      lib/PR/f3dex3/gspF3DEX3.BrW.fifo.o(.data*);
+      lib/PR/f3dex3/gspF3DEX3_BrW.o(.data*);
       #if (defined(DEBUG_F3DEX3_PROFILER))
-         lib/PR/f3dex3/gspF3DEX3.BrW.PA.fifo.o(.data*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.PB.fifo.o(.data*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.PC.fifo.o(.data*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_PA.o(.data*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_PB.o(.data*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_PC.o(.data*);
       #endif
    #elif F3DEX_VERSION == 4
-      lib/PR/f3dex3/gspF3DEX3.BrW.LVP.fifo.o(.data*);
+      lib/PR/f3dex3/gspF3DEX3_BrW_LVP.o(.data*);
       #if (defined(DEBUG_F3DEX3_PROFILER))
-         lib/PR/f3dex3/gspF3DEX3.BrW.LVP.PA.fifo.o(.data*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.LVP.PB.fifo.o(.data*);
-         lib/PR/f3dex3/gspF3DEX3.BrW.LVP.PC.fifo.o(.data*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_LVP_PA.o(.data*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_LVP_PB.o(.data*);
+         lib/PR/f3dex3/gspF3DEX3_BrW_LVP_PC.o(.data*);
       #endif
    #else
       #error "Invalid F3DEX3 selection."

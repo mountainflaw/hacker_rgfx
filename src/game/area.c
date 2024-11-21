@@ -84,10 +84,17 @@ u8 sSpawnTypeFromWarpBhv[] = {
     MARIO_SPAWN_AIRBORNE_STAR_COLLECT, MARIO_SPAWN_AIRBORNE_DEATH,       MARIO_SPAWN_LAUNCH_STAR_COLLECT,   MARIO_SPAWN_LAUNCH_DEATH,
 };
 
+#ifdef F3DEX_GBI_3
 Vp gViewport = { {
     { 640, 480, 511, 0 },
     { 640, 480, 511, 0 },
 } };
+#else
+Vp gViewport = { {
+    { 640, 480, 511, 0 },
+    { 640, 480, 511, 0 },
+} };
+#endif
 
 LangArray gNoControllerMsg = DEFINE_LANGUAGE_ARRAY(
     "NO CONTROLLER",

@@ -1252,8 +1252,14 @@ void geo_process_root(struct GraphNodeRoot *node, Vp *b, Vp *c, s32 clearColor) 
 
         gMatStackIndex = 0;
         gCurrAnimType = ANIM_TYPE_NONE;
+#ifdef F3DEX_GBI_3
+        vec3s_set(viewport->vp.vtrans, node->x * 4, node->y * 4, G_NEW_MAXZ / 2);
+        vec3s_set(viewport->vp.vscale, node->width * 4, node->height * -4, G_NEW_MAXZ / 2);
+#else
         vec3s_set(viewport->vp.vtrans, node->x * 4, node->y * 4, 511);
-        vec3s_set(viewport->vp.vscale, node->width * 4, node->height * 4, 511);
+        vec3s_set(viewport->vp.vscale, node->width * 4, node->height * -4, 511);
+#endif
+
 
         if (b != NULL) {
             clear_framebuffer(clearColor);

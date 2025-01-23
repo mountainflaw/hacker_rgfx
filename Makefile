@@ -509,9 +509,11 @@ endif
 
 ifneq (,$(call find-command,wslview))
     EMULATOR = "/mnt/c/Program Files (x86)/parallel-launcher/parallel-launcher.exe"
-else
+else ifneq ($(call find-command, parallel-launcher),)
     EMULATOR = parallel-launcher
-endif
+else
+    EMULATOR = flatpak run ca.parallel_launcher.ParallelLauncher
+endif 
 
 EMU_FLAGS =
 

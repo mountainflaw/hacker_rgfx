@@ -1,4 +1,5 @@
 // 0x0E000658
+#include "geo_commands.h"
 const GeoLayout wdw_geo_000658[] = {
    GEO_NODE_SCREEN_AREA(10, SCREEN_CENTER_X, SCREEN_CENTER_Y, SCREEN_CENTER_X, SCREEN_CENTER_Y),
    GEO_OPEN_NODE(),
@@ -6,7 +7,6 @@ const GeoLayout wdw_geo_000658[] = {
       GEO_OPEN_NODE(),
          GEO_NODE_ORTHO(100),
          GEO_OPEN_NODE(),
-            GEO_BACKGROUND(BACKGROUND_UNDERWATER_CITY, geo_skybox_main),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_ZBUFFER(1),
@@ -15,6 +15,7 @@ const GeoLayout wdw_geo_000658[] = {
          GEO_OPEN_NODE(),
             GEO_CAMERA(CAMERA_MODE_RADIAL, 0, 2000, 6000, -4352, 0, -4352, geo_camera_main),
             GEO_OPEN_NODE(),
+               GEO_ASM(BACKGROUND_UNDERWATER_CITY, rgfx_skybox),
                GEO_DISPLAY_LIST(LAYER_OPAQUE,            wdw_seg7_dl_07009AB0),
                GEO_DISPLAY_LIST(LAYER_ALPHA,             wdw_seg7_dl_0700A138),
                GEO_DISPLAY_LIST(LAYER_TRANSPARENT,       wdw_seg7_dl_07012798),

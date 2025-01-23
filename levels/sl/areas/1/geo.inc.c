@@ -1,4 +1,5 @@
 // 0x0E0003A8
+#include "geo_commands.h"
 const GeoLayout sl_geo_0003A8[] = {
    GEO_NODE_SCREEN_AREA(10, SCREEN_CENTER_X, SCREEN_CENTER_Y, SCREEN_CENTER_X, SCREEN_CENTER_Y),
    GEO_OPEN_NODE(),
@@ -6,7 +7,6 @@ const GeoLayout sl_geo_0003A8[] = {
       GEO_OPEN_NODE(),
          GEO_NODE_ORTHO(100),
          GEO_OPEN_NODE(),
-            GEO_BACKGROUND(BACKGROUND_SNOW_MOUNTAINS, geo_skybox_main),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_ZBUFFER(1),
@@ -15,6 +15,7 @@ const GeoLayout sl_geo_0003A8[] = {
          GEO_OPEN_NODE(),
             GEO_CAMERA(CAMERA_MODE_FREE_ROAM, 0, 2000, 6000, 0, 4400, 0, geo_camera_main),
             GEO_OPEN_NODE(),
+               GEO_ASM(BACKGROUND_SNOW_MOUNTAINS, rgfx_skybox),
                GEO_DISPLAY_LIST(LAYER_OPAQUE,            sl_seg7_dl_07005478),
                GEO_DISPLAY_LIST(LAYER_TRANSPARENT,       sl_seg7_dl_070056B0),
                GEO_DISPLAY_LIST(LAYER_OPAQUE,            sl_seg7_dl_070073D0),

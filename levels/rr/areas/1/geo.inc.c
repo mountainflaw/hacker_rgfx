@@ -1,4 +1,5 @@
 // 0x0E0009D0
+#include "geo_commands.h"
 const GeoLayout rr_geo_0009D0[] = {
    GEO_NODE_SCREEN_AREA(10, SCREEN_CENTER_X, SCREEN_CENTER_Y, SCREEN_CENTER_X, SCREEN_CENTER_Y),
    GEO_OPEN_NODE(),
@@ -6,7 +7,6 @@ const GeoLayout rr_geo_0009D0[] = {
       GEO_OPEN_NODE(),
          GEO_NODE_ORTHO(100),
          GEO_OPEN_NODE(),
-            GEO_BACKGROUND(BACKGROUND_BELOW_CLOUDS, geo_skybox_main),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_ZBUFFER(1),
@@ -15,6 +15,7 @@ const GeoLayout rr_geo_0009D0[] = {
          GEO_OPEN_NODE(),
             GEO_CAMERA(CAMERA_MODE_8_DIRECTIONS, 0, 2000, 6000, 0, 0, -8000, geo_camera_main),
             GEO_OPEN_NODE(),
+               GEO_ASM(BACKGROUND_BELOW_CLOUDS, rgfx_skybox),
                GEO_ASM(0,               geo_exec_flying_carpet_timer_update),
                GEO_DISPLAY_LIST(LAYER_ALPHA, dl_cruiser_metal_holes),
                GEO_RENDER_OBJ(),

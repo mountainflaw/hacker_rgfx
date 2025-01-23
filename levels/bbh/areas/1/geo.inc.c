@@ -472,7 +472,6 @@ const GeoLayout geo_bbh_000F00[] = {
       GEO_OPEN_NODE(),
          GEO_NODE_ORTHO(100),
          GEO_OPEN_NODE(),
-            GEO_BACKGROUND(BACKGROUND_HAUNTED, geo_skybox_main),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_ZBUFFER(1),
@@ -481,6 +480,7 @@ const GeoLayout geo_bbh_000F00[] = {
          GEO_OPEN_NODE(),
             GEO_CAMERA(CAMERA_MODE_CLOSE, 0, 2000, 6000, 0, 0, 0, geo_camera_main),
             GEO_OPEN_NODE(),
+		          GEO_ASM(BACKGROUND_HAUNTED, rgfx_skybox),
                GEO_SWITCH_CASE(32, geo_switch_area),
                GEO_OPEN_NODE(),
                   GEO_BRANCH(1, geo_bbh_000670), // 0x0E000670

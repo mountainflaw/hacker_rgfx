@@ -469,4 +469,6 @@ enum GeoLayoutCommands {
 #define GEO_CULLING_RADIUS(cullingRadius) \
     CMD_BBH(GEO_CMD_NODE_CULLING_RADIUS, 0x00, cullingRadius)
 
+
+Gfx *rgfx_skybox(s32 state, struct GraphNode *node, UNUSED void *context);
 #endif // GEO_COMMANDS_H

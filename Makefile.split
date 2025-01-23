@@ -255,7 +255,7 @@ $(BUILD_DIR)/bin/translation_es.elf:  SEGMENT_ADDRESS := 0x19000000
 
 $(BUILD_DIR)/bin/%_skybox.c: textures/skyboxes/%.png
 	$(call print,Splitting:,$<,$@)
-	$(V)$(SKYCONV) --type sky --split $^ $(BUILD_DIR)/bin
+			$(V)$(SKYCONVRGFX) $^ $@
 
 $(BUILD_DIR)/bin/%_skybox.elf: SEGMENT_ADDRESS := 0x0A000000
 

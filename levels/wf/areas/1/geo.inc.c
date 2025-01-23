@@ -1,4 +1,5 @@
 // 0x0E000BF8
+#include "geo_commands.h"
 const GeoLayout wf_geo_000BF8[] = {
    GEO_NODE_SCREEN_AREA(10, SCREEN_CENTER_X, SCREEN_CENTER_Y, SCREEN_CENTER_X, SCREEN_CENTER_Y),
    GEO_OPEN_NODE(),
@@ -6,7 +7,6 @@ const GeoLayout wf_geo_000BF8[] = {
       GEO_OPEN_NODE(),
          GEO_NODE_ORTHO(100),
          GEO_OPEN_NODE(),
-            GEO_BACKGROUND(BACKGROUND_BELOW_CLOUDS, geo_skybox_main),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_ZBUFFER(1),
@@ -15,6 +15,7 @@ const GeoLayout wf_geo_000BF8[] = {
          GEO_OPEN_NODE(),
             GEO_CAMERA(CAMERA_MODE_RADIAL, 0, 2000, 6000, 0, 2000, 0, geo_camera_main),
             GEO_OPEN_NODE(),
+               GEO_ASM(BACKGROUND_BELOW_CLOUDS, rgfx_skybox),
                GEO_DISPLAY_LIST(LAYER_OPAQUE,            wf_seg7_dl_070050C8),
                GEO_DISPLAY_LIST(LAYER_OPAQUE_DECAL,      wf_seg7_dl_070052B8),
                GEO_DISPLAY_LIST(LAYER_TRANSPARENT_DECAL, wf_seg7_dl_07005538),

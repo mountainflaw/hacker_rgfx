@@ -1,4 +1,5 @@
 // 0x0E000648
+#include "geo_commands.h"
 const GeoLayout ssl_geo_000648[] = {
    GEO_NODE_SCREEN_AREA(10, SCREEN_CENTER_X, SCREEN_CENTER_Y, SCREEN_CENTER_X, SCREEN_CENTER_Y),
    GEO_OPEN_NODE(),
@@ -6,7 +7,6 @@ const GeoLayout ssl_geo_000648[] = {
       GEO_OPEN_NODE(),
          GEO_NODE_ORTHO(100),
          GEO_OPEN_NODE(),
-            GEO_BACKGROUND(BACKGROUND_DESERT, geo_skybox_main),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_ZBUFFER(1),
@@ -15,6 +15,7 @@ const GeoLayout ssl_geo_000648[] = {
          GEO_OPEN_NODE(),
             GEO_CAMERA(CAMERA_MODE_RADIAL, 0, 2000, 6000, -2048, 0, -1024, geo_camera_main),
             GEO_OPEN_NODE(),
+               GEO_ASM(BACKGROUND_DESERT, rgfx_skybox),
                GEO_DISPLAY_LIST(LAYER_OPAQUE,            ssl_seg7_dl_07009F48),
                GEO_DISPLAY_LIST(LAYER_OPAQUE,            ssl_seg7_dl_0700BA78),
                GEO_DISPLAY_LIST(LAYER_ALPHA,             ssl_seg7_dl_0700BC18),

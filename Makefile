@@ -493,6 +493,7 @@ AIFF_EXTRACT_CODEBOOK := $(TOOLS_DIR)/aiff_extract_codebook
 VADPCM_ENC            := $(TOOLS_DIR)/vadpcm_enc
 EXTRACT_DATA_FOR_MIO  := $(TOOLS_DIR)/extract_data_for_mio
 SKYCONV               := $(TOOLS_DIR)/skyconv
+SKYCONVRGFX           := $(PYTHON) $(TOOLS_DIR)/skyconv_rgfx.py
 FIXLIGHTS_PY          := $(TOOLS_DIR)/fixlights.py
 FLIPS                 := $(TOOLS_DIR)/flips
 ifeq ($(GZIPVER),std)

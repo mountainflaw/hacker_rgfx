@@ -75,4 +75,7 @@ void sound_reset(u8 reverbPresetId);
 
 void audio_init(void); // in load.c
 
+#ifdef UCODE_LOW_PASS_FILTER
+extern ALIGNED16 volatile s16 gFilterIntensity;
+#endif
 #endif // AUDIO_EXTERNAL_H

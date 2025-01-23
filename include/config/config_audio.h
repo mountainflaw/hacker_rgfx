@@ -45,8 +45,15 @@
 #define MAX_SIMULTANEOUS_NOTES_EMULATOR 40
 #define MAX_SIMULTANEOUS_NOTES_CONSOLE 24
 
-/** 
+/**
  * Uses a much better implementation of reverb over vanilla's fake echo reverb. Great for caves or eerie levels, as well as just a better audio experience in general.
  * Reverb presets can be configured in audio/data.c to meet desired aesthetic/performance needs. More detailed usage info can also be found on the HackerSM64 Wiki page.
  */
 // #define BETTER_REVERB
+
+/**
+ * Apply a low-pass pole filter effect to the sound when the camera goes underwater.
+ */
+
+#define UCODE_LOW_PASS_FILTER
+

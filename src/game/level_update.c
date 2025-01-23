@@ -33,6 +33,7 @@
 #include "debug.h"
 
 #include "config.h"
+#include "audio/external.h"
 
 // TODO: Make these ifdefs better
 const char *credits01[] = { "1GAME DIRECTOR", "SHIGERU MIYAMOTO" };
@@ -1050,6 +1051,13 @@ s32 play_mode_normal(void) {
         update_camera(gCurrentArea->camera);
 #endif
     }
+#ifdef UCODE_LOW_PASS_FILTER
+    if (find_water_level(gLakituState.pos[0], gLakituState.pos[2]) > gLakituState.pos[1] && gMarioState->action & ACT_FLAG_SWIMMING) {
+        gFilterIntensity = 26000;
+    } else {
+        gFilterIntensity = 0;
+    }
+#endif
 
     initiate_painting_warp();
     initiate_delayed_warp();
@@ -1075,6 +1083,9 @@ s32 play_mode_normal(void) {
 }
 
 s32 play_mode_paused(void) {
+#ifdef UCODE_LOW_PASS_FILTER
+    gFilterIntensity = 0;
+#endif
     if (gMenuOptSelectIndex == MENU_OPT_NONE) {
         set_menu_mode(MENU_MODE_RENDER_PAUSE_SCREEN);
     } else if (gMenuOptSelectIndex == MENU_OPT_DEFAULT) {

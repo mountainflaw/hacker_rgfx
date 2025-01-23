@@ -66,8 +66,6 @@ u8 gAudioResetPresetIdToLoad;
 s32 gAudioResetFadeOutFramesLeft;
 #endif
 
-extern s32 gMaxAudioCmds;
-
 #ifdef VERSION_SH
 void *get_bank_or_seq_inner(s32 poolIdx, s32 arg1, s32 bankId);
 struct UnkEntry *func_sh_802f1ec4(u32 size);
@@ -1339,9 +1337,6 @@ void audio_reset_session(void) {
     if (gAudioBufferParameters.presetUnk4 >= 2) {
         gAudioBufferParameters.maxAiBufferLength -= 0x10;
     }
-    gMaxAudioCmds = gMaxSimultaneousNotes * 0x14 * gAudioBufferParameters.updatesPerFrame + preset->numReverbs * 0x20 + 0x1E0;
-#else
-    gMaxAudioCmds = gMaxSimultaneousNotes * 0x10 * gAudioBufferParameters.updatesPerFrame + preset->numReverbs * 0x20 + 0x300;
 #endif
 #else
     gAiFrequency = osAiSetFrequency(gAudioSessionSettings.frequency);
@@ -1370,7 +1365,6 @@ void audio_reset_session(void) {
 #else
     gTempoInternalToExternal = (u32)(updatesPerFrame * 2880000.0f / gTatumsPerBeat / 16.713f);
 #endif
-    gMaxAudioCmds = gMaxSimultaneousNotes * 20 * updatesPerFrame + 320;
 #endif
 
 #if defined(VERSION_SH)
@@ -1411,7 +1405,7 @@ void audio_reset_session(void) {
 
 #if defined(VERSION_JP) || defined(VERSION_US)
     for (j = 0; j < 2; j++) {
-        gAudioCmdBuffers[j] = soundAlloc(&gNotesAndBuffersPool, ALIGN16(gMaxAudioCmds * sizeof(u64)));
+        gAudioCmdBuffers[j] = soundAlloc(&gNotesAndBuffersPool, MAX_AUDIO_CMDS);
     }
 #endif
 
@@ -1424,7 +1418,7 @@ void audio_reset_session(void) {
     gNoteSubsEu = soundAlloc(&gNotesAndBuffersPool, ALIGN16((gAudioBufferParameters.updatesPerFrame * gMaxSimultaneousNotes) * sizeof(struct NoteSubEu)));
 
     for (j = 0; j != 2; j++) {
-        gAudioCmdBuffers[j] = soundAlloc(&gNotesAndBuffersPool, ALIGN16(gMaxAudioCmds * sizeof(u64)));
+        gAudioCmdBuffers[j] = soundAlloc(&gNotesAndBuffersPool, MAX_AUDIO_CMDS);
     }
 
     init_reverb_eu();

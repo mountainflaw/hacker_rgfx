@@ -4,6 +4,21 @@
 #include "buffers/framebuffers.h"
 #include "rgfx_framebuffer.h"
 
+extern u16 sRenderedFramebuffer;
+
+u8 gMotionBlurIntensity = FALSE;
+u8 gCurrentMotionBlurIntensity = FALSE;
+u8 gMotionBlurColor[3] = { 0xFF, 0xFF, 0xFF };
+s16 gMotionBlurIncrement = 16;
+
+u8 gFilmGrainIntensity = FALSE;
+u8 gCurrentFilmGrainIntensity = FALSE;
+u8 gFilmGrainColor[3] = { 0xFF, 0x00, 0xFF };
+s16 gFilmGrainIncrement = 16;
+
+u8 gGreyscaleEnabled = FALSE;
+u8 gGreyscaleColor[3] = { 0xFF, 0xFF, 0xFF };
+
 /**
  * Creates a texture rectangle overlay that displays a SCREEN_WIDTH * SCREEN_HEIGHT image over the screen.
  * This function has been copied over from MITM.
@@ -58,21 +73,6 @@ static void render_tiled_screen_effect(Texture *image, s32 mode, u32 fmt) {
         );
     }
 }
-
-extern u16 sRenderedFramebuffer;
-
-u8 gMotionBlurIntensity = FALSE;
-u8 gCurrentMotionBlurIntensity = FALSE;
-u8 gMotionBlurColor[3] = { 0xFF, 0xFF, 0xFF };
-s16 gMotionBlurIncrement = 16;
-
-u8 gFilmGrainIntensity = FALSE;
-u8 gCurrentFilmGrainIntensity = FALSE;
-u8 gFilmGrainColor[3] = { 0xFF, 0x00, 0xFF };
-s16 gFilmGrainIncrement = 16;
-
-u8 gGreyscaleEnabled = FALSE;
-u8 gGreyscaleColor[3] = { 0xFF, 0xFF, 0xFF };
 
 /**
  * Displays the previous frame over the current one. gMotionBlurIntensity is used as the target amount of intensity.

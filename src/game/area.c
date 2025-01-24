@@ -31,6 +31,8 @@
 #include "f3dex3.h"
 #endif
 
+#include "rgfx_framebuffer.h"
+
 struct SpawnInfo gPlayerSpawnInfos[1];
 struct GraphNode *gGraphNodePointers[MODEL_ID_COUNT];
 struct Area gAreaData[AREA_COUNT];
@@ -428,6 +430,8 @@ void render_game(void) {
         #ifdef DEBUG_F3DEX3_PROFILER
             draw_f3dex3_profiler();
         #endif
+
+        rgfx_apply_fbfx();
 
         if (gWarpTransition.isActive) {
             if (gWarpTransDelay == 0) {

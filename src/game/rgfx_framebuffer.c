@@ -3,6 +3,7 @@
 #include "engine/math_util.h"
 #include "buffers/framebuffers.h"
 #include "rgfx_framebuffer.h"
+
 /**
  * Creates a texture rectangle overlay that displays a SCREEN_WIDTH * SCREEN_HEIGHT image over the screen.
  * This function has been copied over from MITM.

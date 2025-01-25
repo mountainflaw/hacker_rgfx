@@ -70,11 +70,11 @@ Gfx *rgfx_skybox(s32 state, struct GraphNode *node, UNUSED void *context) {
         glistp = dl;
 
     if  (gMarioState->marioObj != NULL) {
-        guTranslate(segmented_to_virtual(scaleMat), gCurGraphNodeCamera->pos[0], gCurGraphNodeCamera->pos[1], gCurGraphNodeCamera->pos[2]);
+        guTranslate(scaleMat, gCurGraphNodeCamera->pos[0], gCurGraphNodeCamera->pos[1], gCurGraphNodeCamera->pos[2]);
     } else {
-        guTranslate(segmented_to_virtual(scaleMat), 0, 0, 0);
+        guTranslate(scaleMat, 0, 0, 0);
     }
-        guRotate(segmented_to_virtual(rotMat), gGlobalTimer * .01 * gCurrentSkybox.rotation0, 0.0f, 1.0f, 0.0f);
+        guRotate(rotMat, gGlobalTimer * .01 * gCurrentSkybox.rotation0, 0.0f, 1.0f, 0.0f);
         gSPMatrix(glistp++, segmented_to_virtual(scaleMat), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
 
         gSPMatrix(glistp++, segmented_to_virtual(rotMat), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_NOPUSH);

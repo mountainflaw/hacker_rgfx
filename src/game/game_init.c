@@ -2,6 +2,7 @@
 
 #include "PR/gbi.h"
 #include "config/config_rom.h"
+#include "config/config_safeguards.h"
 #include "sm64.h"
 #include "gfx_dimensions.h"
 #include "audio/external.h"
@@ -445,16 +446,25 @@ void display_and_vsync(void) {
 #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
 #endif
+
+#ifndef USE_DOUBLE_BUFFER
     osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
-#ifndef UNLOCK_FPS
+    #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+    #endif
+#else
+    #ifndef UNLOCK_FPS
+    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+    #endif
+    osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
 #endif
+
     // Skip swapping buffers on inaccurate emulators other than VC so that they display immediately as the Gfx task finishes
     if (gEmulator & INSTANT_INPUT_BLACKLIST) {
-        if (++sRenderedFramebuffer == 3) {
+        if (++sRenderedFramebuffer == NUM_FRAMEBUFFERS) {
             sRenderedFramebuffer = 0;
         }
-        if (++sRenderingFramebuffer == 3) {
+        if (++sRenderingFramebuffer == NUM_FRAMEBUFFERS) {
             sRenderingFramebuffer = 0;
         }
     }

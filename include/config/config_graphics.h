@@ -157,7 +157,13 @@
  * Disables instant input.
  * Mostly used for debugging purposes, or for future-proofing a release if concerned.
  */
-//  #define DISABLE_INSTANT_INPUT
+//#define DISABLE_INSTANT_INPUT
+
+/**
+ * Use double buffering versus the original triple buffering for vsync.
+ * Worse performance, but better latency across all platforms.
+ */
+//#define USE_DOUBLE_BUFFER
 
 /**
  * Primary graphics microcode selection
@@ -171,8 +177,7 @@
  * A built-in profiler is available for F3DEX3 and can be enabled inside config/config_debug.h
  * under DEBUG_F3DEX3_PROFILER.
  */
-
-#define F3DEX_VERSION 3
+#define F3DEX_VERSION 2
 
 /**
  * Enables usage of the line microcode. It can be loaded with gSPLoadUcode within a display list.

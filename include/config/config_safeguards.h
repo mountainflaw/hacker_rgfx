@@ -83,6 +83,12 @@
     #undef F3DEX3_LIGHTING_ENGINE
 #endif // F3DEX3_LIGHTING_ENGINE
 
+#ifdef USE_DOUBLE_BUFFERING
+    #define NUM_FRAMEBUFFERS 2
+#else
+    #define NUM_FRAMEBUFFERS 3
+#endif
+
 /*****************
  * config_debug.h
  */

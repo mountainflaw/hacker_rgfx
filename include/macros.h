@@ -18,6 +18,7 @@
 // Avoid compiler warnings for unused variables.
 #ifdef __GNUC__
 #define UNUSED __attribute__((unused))
+#define IGNORE __attribute__((unused))
 #else
 #define UNUSED
 #endif
@@ -35,6 +36,21 @@
 #else
 #define ALWAYS_INLINE inline
 #endif
+
+// Function cannot read or write any globals.
+#define PURE __attribute__((pure))
+
+// Function can read globals, but not write.
+#define CONST __attribute__((const))
+
+// Function can only read memory, including globals.
+#define PURE __attribute__((pure))
+
+// Code section is unreachable.
+#define UNREACHABLE __builtin_unreachable()
+
+// Assume.
+#define ASSUME(x) if (!(x)) { UNREACHABLE; }
 
 // Fall through a switch case.
 #ifdef __GNUC__

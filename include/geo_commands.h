@@ -471,4 +471,5 @@ enum GeoLayoutCommands {
 
 
 Gfx *rgfx_skybox(s32 state, struct GraphNode *node, UNUSED void *context);
+Gfx *rgfx_time(s32 state, struct GraphNode *node, UNUSED void *context);
 #endif // GEO_COMMANDS_H

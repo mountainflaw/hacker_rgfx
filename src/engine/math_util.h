@@ -6,6 +6,8 @@
 #include "types.h"
 #include "game/puppyprint.h"
 
+#include "game/rgfx_math.h"
+
 #define NEAR_ZERO   __FLT_EPSILON__
 #define NEAR_ONE    (1.0f - __FLT_EPSILON__)
 
@@ -622,10 +624,6 @@ ALWAYS_INLINE s32 roundf(f32 in) {
     (mtx)[0][3] = (mtx)[1][3] = (mtx)[2][3] = 0;\
     ((u32 *)(mtx))[15] = FLOAT_ONE;             \
 }
-
-u16 random_u16(void);
-f32 random_float(void);
-s32 random_sign(void);
 
 void mtxf_copy(Mat4 dest, Mat4 src);
 void mtxf_identity(Mat4 mtx);

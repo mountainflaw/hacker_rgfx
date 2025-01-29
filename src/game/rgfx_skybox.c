@@ -3,8 +3,8 @@
  * 10/23/23      -- Adds 3D skybox support to SM64 (similar to SM64DS skybox system) with rotation and tint options supported.
  */
 
-//#define DEBUG_SKYBOX
 
+#include <math.h>
 #include <ultra64.h>
 #include "geo_commands.h"
 #include "types.h"
@@ -16,6 +16,10 @@
 #include "level_update.h"
 #include "game_init.h"
 #include "engine/math_util.h"
+
+#ifdef F3DEX3_LIGHTING_ENGINE
+#include "f3dex3.h"
+#endif
 
 extern Texture bbh_skybox_texture[];
 extern Texture bidw_skybox_texture[];
@@ -113,34 +117,23 @@ Gfx *rgfx_skybox(s32 state, struct GraphNode *node, UNUSED void *context) {
 }
 
 static RgfxEnvironment sEnvironmentSettings[] = {
-    {{255, 255, 255}, {0, 130, 110}, {255, 160, 95},  0, 0.0f, 0.00091f},
-    {{255, 64, 32}, {0, 130, 110}, {255, 160, 95},  0, 0.0f, 0.00091f}
+    {{255, 255, 255}, {192, 64, 128}, {0, 65, 128}, {-0x7F, 0x49, 0x49}, {0x49, 0x49, 0x49}, {0x7F, 0x49, 0x49}, 0, 0.0f, 0.00603704f},
 };
 
 RgfxEnvironment gCurrentEnvironment;
 
-/*
-#define G_CCMUX_TEXEL0          1
-#define G_CCMUX_TEXEL1          2
-#define G_CCMUX_PRIMITIVE       3
-*/
-
 Gfx *rgfx_time(s32 state, struct GraphNode *node, UNUSED void *context) {
-    Gfx *dl, *dlIter;
     u8 color[3], *c0 = NULL, *c1 = NULL;
-    struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
 
-    #ifdef DEBUG_SKYBOX
-    RgfxHud *hud;
-    char buf[32];
-    #endif
+#ifdef F3DEX3_LIGHTING_ENGINE
+    s8 direction[3], *d0 = NULL, *d1 = NULL;
+#endif
+
+    struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
 
     if (state != GEO_CONTEXT_RENDER) {
         gCurrentEnvironment = sEnvironmentSettings[asGenerated->parameter];
     } else  {
-        dl = alloc_display_list(2 * sizeof(Gfx));
-        dlIter = dl;
-
         switch (gCurrentEnvironment.color) {
             case 0: c0 = &gCurrentEnvironment.color0[0]; c1 = &gCurrentEnvironment.color1[0]; break;
             case 1: c0 = &gCurrentEnvironment.color1[0]; c1 = &gCurrentEnvironment.color2[0]; break;
@@ -151,14 +144,25 @@ Gfx *rgfx_time(s32 state, struct GraphNode *node, UNUSED void *context) {
         color[1] = (c0[1] + (c1[1] - c0[1]) * gCurrentEnvironment.lerp);
         color[2] = (c0[2] + (c1[2] - c0[2]) * gCurrentEnvironment.lerp);
 
-        gDPSetPrimColor(dlIter++, 0, 0, color[0], color[1], color[2], 255);
-
         gCurrentSkybox.tint[0] = color[0];
         gCurrentSkybox.tint[1] = color[1];
         gCurrentSkybox.tint[2] = color[2];
 
-        gSPEndDisplayList(dlIter);
+#ifdef F3DEX3_LIGHTING_ENGINE // If lighting is enabled, enable lights for this scene and calculate lighting color and direction
+        switch (gCurrentEnvironment.color) {
+            case 0: d0 = &gCurrentEnvironment.dir0[0]; d1 = &gCurrentEnvironment.dir1[0]; break;
+            case 1: d0 = &gCurrentEnvironment.dir1[0]; d1 = &gCurrentEnvironment.dir2[0]; break;
+            case 2: d0 = &gCurrentEnvironment.dir2[0]; d1 = &gCurrentEnvironment.dir0[0]; break;
+        }
 
+        direction[0] = (d0[0] + (d1[0] - d0[0]) * gCurrentEnvironment.lerp);
+        direction[1] = (d0[1] + (d1[1] - d0[1]) * gCurrentEnvironment.lerp);
+        direction[2] = (d0[2] + (d1[2] - d0[2]) * gCurrentEnvironment.lerp);
+
+        add_directional_light(color[0] * 0.2f, color[1] * 0.2f, color[2] * 0.2f, direction[0], direction[1], direction[2], 3);
+        set_ambient_light(color[0] * 0.25f, color[1] * 0.25f, color[2] * 0.25f);
+        //set_ambient_light(0, 0, 0);
+#endif
         gCurrentEnvironment.lerp += gCurrentEnvironment.rate;
 
         if (gCurrentEnvironment.lerp >= 1.0f) {
@@ -168,8 +172,6 @@ Gfx *rgfx_time(s32 state, struct GraphNode *node, UNUSED void *context) {
                 gCurrentEnvironment.color = 0;
             }
         }
-
-        return dl;
     }
     return NULL;
 }

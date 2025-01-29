@@ -12,6 +12,7 @@
 #include "level_update.h"
 #include "engine/math_util.h"
 #include "config/config_world.h"
+#include "print.h"
 #endif
 
 #include "f3dex3.h"
@@ -307,12 +308,11 @@ static void sort_linked_lights(LinkedLight **head) { // We can only load up to 9
 void setup_lighting_engine() {
     u8 lightNum = gLightNumBase;
     Light *l;
+    LinkedDirectionalLight *cDir = sLinkedDirectionalLightHead;
 
     if (sLinkedDirectionalLightHead == NULL && sLinkedLightHead == NULL && sGlobalAmbientLight == NULL) { // don't even bother
         return;
     }
-
-    LinkedDirectionalLight *cDir = sLinkedDirectionalLightHead;
 
     while (cDir != NULL) {
         if (lightNum >= NUMLIGHTS_MAX) { // quit processing at 9 active lights
@@ -335,7 +335,6 @@ void setup_lighting_engine() {
         gSPLight(gDisplayListHead++, &l->l, lightNum);
         lightNum++;
         gSPNumLights(gDisplayListHead++, lightNum);
-
     }
 
     sort_linked_lights(&sLinkedLightHead);
@@ -370,13 +369,15 @@ void setup_lighting_engine() {
         gSPNumLights(gDisplayListHead++, lightNum);
     }
 
-    if (sGlobalAmbientLight != NULL) {
+    if (sGlobalAmbientLight != NULL && lightNum != gLightNumBase) {
         gSPAmbient(gDisplayListHead++, sGlobalAmbientLight, lightNum);
-        gSPNumLights(gDisplayListHead, lightNum);
+        gSPNumLights(gDisplayListHead++, lightNum - 1);
     } else if (sGlobalAmbientLight == NULL && lightNum != gLightNumBase) { // We do not have an ambient light, so create one.
-        set_ambient_light(0, 0, 0);
         gSPAmbient(gDisplayListHead++, sGlobalAmbientLight, lightNum);
-        gSPNumLights(gDisplayListHead, lightNum);
+        gSPNumLights(gDisplayListHead++, lightNum - 1);
+    } else if (sGlobalAmbientLight != NULL && lightNum == gLightNumBase) { // we only set an ambient light
+        gSPAmbient(gDisplayListHead++, sGlobalAmbientLight, gLightNumBase);
+        gSPNumLights(gDisplayListHead++, gLightNumBase - 1);
     }
 
     sGlobalAmbientLight = NULL;

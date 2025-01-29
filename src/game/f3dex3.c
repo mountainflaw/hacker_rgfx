@@ -373,6 +373,7 @@ void setup_lighting_engine() {
         gSPAmbient(gDisplayListHead++, sGlobalAmbientLight, lightNum);
         gSPNumLights(gDisplayListHead++, lightNum - 1);
     } else if (sGlobalAmbientLight == NULL && lightNum != gLightNumBase) { // We do not have an ambient light, so create one.
+        set_ambient_light(0, 0, 0);
         gSPAmbient(gDisplayListHead++, sGlobalAmbientLight, lightNum);
         gSPNumLights(gDisplayListHead++, lightNum - 1);
     } else if (sGlobalAmbientLight != NULL && lightNum == gLightNumBase) { // we only set an ambient light

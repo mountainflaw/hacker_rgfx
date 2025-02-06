@@ -1596,38 +1596,6 @@ void render_pause_red_coins(void) {
     }
 }
 
-LangArray textCurrRatio43 = DEFINE_LANGUAGE_ARRAY(
-    "ASPECT RATIO: 4:3\nPRESS L TO SWITCH",
-    "RATIO D'ASPECT: 4:3\nAPPUYEZ SUR L POUR CHANGER",
-    "SEITENVERHÄLTNIS: 4:3\nDRÜCKE L ZUM WECHSELN",
-    "アスペクトひ: ４:３\nＬボタンできりかえ",
-    "RELACIÓN DE ASPECTO: 4:3\nPULSA L PARA CAMBIAR");
-
-LangArray textCurrRatio169 = DEFINE_LANGUAGE_ARRAY(
-    "ASPECT RATIO: 16:9\nPRESS L TO SWITCH",
-    "RATIO D'ASPECT: 16:9\nAPPUYEZ SUR L POUR CHANGER",
-    "SEITENVERHÄLTNIS: 16:9\nDRÜCKE L ZUM WECHSELN",
-    "アスペクトひ: １６:９\nＬボタンできりかえ",
-    "RELACIÓN DE ASPECTO: 16:9\nPULSA L PARA CAMBIAR");
-
-/// By default, not needed as puppycamera has an option, but should you wish to revert that, you are legally allowed.
-#if defined(WIDE) && !defined(PUPPYCAM)
-void render_widescreen_setting(void) {
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    set_text_color(255, 255, 255);
-    if (!gConfig.widescreen) {
-        print_generic_string(10, 24, LANG_ARRAY(textCurrRatio43));
-    } else {
-        print_generic_string(10, 24, LANG_ARRAY(textCurrRatio169));
-    }
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-    if (gPlayer1Controller->buttonPressed & L_TRIG){
-        gConfig.widescreen ^= 1;
-        save_file_set_widescreen_mode(gConfig.widescreen);
-    }
-}
-#endif
-
 LangArray textCourseX = DEFINE_LANGUAGE_ARRAY(
     "COURSE %s",
     "NIVEAU %s",
@@ -1701,32 +1669,38 @@ void render_pause_my_score_coins(void) {
 }
 
 LangArray textLakituMario = DEFINE_LANGUAGE_ARRAY(
-    "LAKITU ↔ MARIO",
-    "LAKITU ↔ MARIO",
-    "LAKITU ↔ MARIO",
-    "ジュゲム↔マリオ",
-    "LAKITU ↔ MARIO");
+    "4:3",
+    "4:3",
+    "4:3",
+    "4:3",
+    "4:3");
 
 LangArray textLakituStop = DEFINE_LANGUAGE_ARRAY(
-    "LAKITU ↔ STOP",
-    "LAKITU ↔ STOP",
-    "LAKITU ↔ STOP",
-    "ジュゲム↔ストップ",
-    "LAKITU ↔ FIJA");
+    "16:9",
+    "16:9",
+    "16:9",
+    "16:9",
+    "16:9");
 
 LangArray textNormalUpClose = DEFINE_LANGUAGE_ARRAY(
-    "(NORMAL)(UP-CLOSE)",
-    "(NORMAL)(GROS-PLAN)",
-    "(NORMAL)(WEIT-ZOOM)",
-    "（おすすめ）（リアル）",
-    "(NORMAL)(CERCA)");
+    "STANDARD",
+    "STANDARD",
+    "STANDARD",
+    "STANDARD",
+    "STANDARD");
 
 LangArray textNormalFixed = DEFINE_LANGUAGE_ARRAY(
-    "(NORMAL)(FIXED)",
-    "(NORMAL)(FIXE)",
-    "(NORMAL)(STATIV)",
-    "（おすすめ）（とまる）",
-    "(NORMAL)(FIJA)");
+    "WIDESCREEN",
+    "WIDESCREEN",
+    "WIDESCREEN",
+    "WIDESCREEN",
+    "WIDESCREEN");
+
+enum {
+    ASPECT_RATIO_SELECTION_NONE,
+    ASPECT_RATIO_SELECTION_4_3,
+    ASPECT_RATIO_SELECTION_16_9
+};
 
 void render_pause_camera_options(s16 x, s16 y, s8 *index, s16 xIndex) {
     handle_menu_scrolling(MENU_SCROLL_HORIZONTAL, index, 1, 2);
@@ -1746,11 +1720,13 @@ void render_pause_camera_options(s16 x, s16 y, s8 *index, s16 xIndex) {
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 
     switch (*index) {
-        case CAM_SELECTION_MARIO:
-            cam_select_alt_mode(CAM_SELECTION_MARIO);
+        case ASPECT_RATIO_SELECTION_4_3:
+            gConfig.widescreen = 0;
+            save_file_set_widescreen_mode(gConfig.widescreen);
             break;
-        case CAM_SELECTION_FIXED:
-            cam_select_alt_mode(CAM_SELECTION_FIXED);
+        case ASPECT_RATIO_SELECTION_16_9:
+            gConfig.widescreen = 1;
+            save_file_set_widescreen_mode(gConfig.widescreen);
             break;
     }
 }
@@ -1770,11 +1746,11 @@ LangArray textExitCourse = DEFINE_LANGUAGE_ARRAY(
     "SALIR DEL NIVEL");
 
 LangArray textCameraAngleR = DEFINE_LANGUAGE_ARRAY(
-    "SET CAMERA ANGLE WITH Ⓡ",
-    "RÉGLAGE CAMÉRA AVEC Ⓡ",
-    "KAMERA MIT Ⓡ VERSTELLEN",
-    "Ｒボタンのカメラきりかえ",
-    "MODO DE CÁMARA CON Ⓡ");
+    "SET ASPECT RATIO",
+    "SET ASPECT RATIO",
+    "SET ASPECT RATIO",
+    "SET ASPECT RATIO",
+    "SET ASPECT RATIO");
 
 void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
     handle_menu_scrolling(MENU_SCROLL_VERTICAL, index, 1, 3);
@@ -2050,9 +2026,6 @@ s32 render_pause_courses_and_castle(void) {
             }
             break;
     }
-#if defined(WIDE) && !defined(PUPPYCAM)
-        render_widescreen_setting();
-#endif
     gDialogTextAlpha += 25;
     if (gDialogTextAlpha > 250) {
         gDialogTextAlpha = 250;

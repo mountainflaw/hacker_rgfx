@@ -91,11 +91,6 @@
 // #define JAPANESE_CHARACTERS
 
 /**
- * Prevents infinite death loops by always restoring Mario's health when he's warped to any kind of warp while dead.
- */
-#define PREVENT_DEATH_LOOP
-
-/**
  * The level that the game starts with immediately after file select.
  * The levelscript needs to have a MARIO_POS command for this to work.
  */

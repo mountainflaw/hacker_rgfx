@@ -58,11 +58,6 @@
 // #define DISABLE_AA
 
 /**
- * Makes the coins ia8 64x64 instead of ia16 32x32. Uses new ia8 textures so that vanilla coins look better.
- */
-// #define IA8_COINS
-
-/**
  * Similar to the above, but 30 FPS (Textures by InTheBeef, cleaned up by Arceveti).
  */
 // #define IA8_30FPS_COINS
@@ -85,11 +80,6 @@
 // #define SILHOUETTE 127
 
 /**
- * Use 64x64 quarter shadow textures (Vanilla are 16x16).
- */
-#define HD_SHADOWS
-
-/**
  * Makes certain objects (mainly trees) transparent when the camera gets close.
  */
 // #define OBJ_OPACITY_BY_CAM_DIST
@@ -98,11 +88,6 @@
  * Fixes the game reading the ia8 burn smoke texture as an rgba16.
  */
 #define BURN_SMOKE_FIX
-
-/**
- * Disables the fix to Koopa's unshelled model.
- */
-#define KOOPA_KEEP_PINK_SHORTS
 
 /**
  * Uses the star object's model in the star dance cutscene.
@@ -152,12 +137,6 @@
  * Only use this if you can test the difference of your hack with and without this change on console.
  */
 // #define USE_FRUSTRATIO2
-
-/**
- * Disables instant input.
- * Mostly used for debugging purposes, or for future-proofing a release if concerned.
- */
-//#define DISABLE_INSTANT_INPUT
 
 /**
  * Use double buffering versus the original triple buffering for vsync.

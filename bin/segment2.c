@@ -2837,7 +2837,6 @@ const Gfx dl_billboard_num_F[] = {
 };
 #endif
 
-#ifdef HD_SHADOWS
 ALIGNED8 static const Texture texture_shadow_quarter_circle_64[] = {
 #include "textures/segment2/shadow_quarter_circle_64.ia8.inc.c"
 };
@@ -2845,15 +2844,6 @@ ALIGNED8 static const Texture texture_shadow_quarter_circle_64[] = {
 ALIGNED8 static const Texture texture_shadow_quarter_square_64[] = {
 #include "textures/segment2/shadow_quarter_square_64.ia8.inc.c"
 };
-#else
-ALIGNED8 static const Texture texture_shadow_quarter_circle[] = {
-#include "textures/segment2/shadow_quarter_circle.ia8.inc.c"
-};
-
-ALIGNED8 static const Texture texture_shadow_quarter_square[] = {
-#include "textures/segment2/shadow_quarter_square.ia8.inc.c"
-};
-#endif
 
 UNUSED ALIGNED8 static const Texture texture_radial_light[] = {
 #include "textures/segment2/light_quarter_circle.ia16.inc.c"
@@ -2953,7 +2943,6 @@ const Gfx dl_shadow_begin[] = {
     gsSPEndDisplayList(),
 };
 
-#ifdef HD_SHADOWS
 const Gfx dl_shadow_circle[] = {
     gsSPDisplayList(dl_shadow_begin),
     gsDPLoadTextureBlock(texture_shadow_quarter_circle_64, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 64, 0, (G_TX_WRAP | G_TX_MIRROR), (G_TX_WRAP | G_TX_MIRROR), 6, 6, G_TX_NOLOD, G_TX_NOLOD),
@@ -2965,32 +2954,12 @@ const Gfx dl_shadow_square[] = {
     gsDPLoadTextureBlock(texture_shadow_quarter_square_64, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 64, 0, (G_TX_WRAP | G_TX_MIRROR), (G_TX_WRAP | G_TX_MIRROR), 6, 6, G_TX_NOLOD, G_TX_NOLOD),
     gsSPEndDisplayList(),
 };
-#else
-const Gfx dl_shadow_circle[] = {
-    gsSPDisplayList(dl_shadow_begin),
-    gsDPLoadTextureBlock(texture_shadow_quarter_circle, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0, (G_TX_WRAP | G_TX_MIRROR), (G_TX_WRAP | G_TX_MIRROR), 4, 4, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPEndDisplayList(),
-};
-
-const Gfx dl_shadow_square[] = {
-    gsSPDisplayList(dl_shadow_begin),
-    gsDPLoadTextureBlock(texture_shadow_quarter_square, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0, (G_TX_WRAP | G_TX_MIRROR), (G_TX_WRAP | G_TX_MIRROR), 4, 4, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPEndDisplayList(),
-};
-#endif
 
 static const Vtx vertex_shadow[] = {
-#ifdef HD_SHADOWS
     {{{    -1,      0,     -1}, 0, { -2048,  -2048}, {0xff, 0xff, 0xff, 0xff}}},
     {{{     1,      0,     -1}, 0, {  2048,  -2048}, {0xff, 0xff, 0xff, 0xff}}},
     {{{    -1,      0,      1}, 0, { -2048,   2048}, {0xff, 0xff, 0xff, 0xff}}},
     {{{     1,      0,      1}, 0, {  2048,   2048}, {0xff, 0xff, 0xff, 0xff}}},
-#else
-    {{{    -1,      0,     -1}, 0, {  -512,   -512}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{     1,      0,     -1}, 0, {   512,   -512}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{    -1,      0,      1}, 0, {  -512,    512}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{     1,      0,      1}, 0, {   512,    512}, {0xff, 0xff, 0xff, 0xff}}},
-#endif
 };
 
 // 0x02014638 - 0x02014660

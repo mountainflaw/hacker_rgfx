@@ -53,13 +53,6 @@
  * config_graphics.h
  */
 
-#ifdef DISABLE_INSTANT_INPUT
-    #undef DISABLE_INSTANT_INPUT
-    #define DISABLE_INSTANT_INPUT 0xFFFFFFFF
-#else
-    #define DISABLE_INSTANT_INPUT 0
-#endif
-
 #ifdef F3DEX_VERSION
     #if F3DEX_VERSION == 2
         #define F3DEX_GBI_2

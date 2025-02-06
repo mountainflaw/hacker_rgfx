@@ -12,6 +12,8 @@
 
 #include "config.h"
 
+#define WALL_KICK_DEGREES 45
+
 static s16 sMovingSandSpeeds[] = { 12, 8, 4, 0 };
 
 struct Surface gWaterSurfacePseudoFloor = {

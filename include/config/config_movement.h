@@ -21,11 +21,6 @@
 // #define RESET_DIRECTION_WHEN_TURNING_AROUND
 
 /**
- * Change the movement speed when hanging from a ceiling (the vanilla value is 4.0f, has no effect if BETTER_HANGING is enabled).
- */
-#define HANGING_SPEED 4.0f
-
-/**
  * Prevents Mario from falling asleep while idle.
  */
 // #define NO_SLEEP

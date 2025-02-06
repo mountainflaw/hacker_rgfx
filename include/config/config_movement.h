@@ -61,11 +61,6 @@
 // #define PREVENT_CAP_LOSS
 
 /**
- * Uses Shindou's pole behavior.
- */
-// #define SHINDOU_POLES
-
-/**
  * If A and Z are pressed on the same frame while running, Mario will long jump instead of ground pound.
  */
 // #define EASIER_LONG_JUMPS
@@ -101,7 +96,7 @@
 // #define SLOPE_BUFFER
 
 /**
- * Disables BLJs and crushes SimpleFlips's dreams.
+ * Disables BLJs.
  */
 // #define DISABLE_BLJ
 

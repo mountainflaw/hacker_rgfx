@@ -1721,11 +1721,11 @@ void render_pause_camera_options(s16 x, s16 y, s8 *index, s16 xIndex) {
 
     switch (*index) {
         case ASPECT_RATIO_SELECTION_4_3:
-            gConfig.widescreen = 0;
+            gConfig.widescreen = FALSE;
             save_file_set_widescreen_mode(gConfig.widescreen);
             break;
         case ASPECT_RATIO_SELECTION_16_9:
-            gConfig.widescreen = 1;
+            gConfig.widescreen = TRUE;
             save_file_set_widescreen_mode(gConfig.widescreen);
             break;
     }

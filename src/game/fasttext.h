@@ -1,7 +1,8 @@
 #ifndef __FASTTEXT_H__
 #define __FASTTEXT_H__
 
-void drawSmallString_impl(Gfx**, int, int, const char*, int, int , int);
+void drawSmallString_impl_alpha(Gfx**, int, int, const char*, int, int, int, int);
+void drawSmallString_impl(Gfx**, int, int, const char*, int, int, int);
 
 static inline void drawSmallString(Gfx **dl, int x, int y, const char* string) {
   drawSmallString_impl(dl, x, y, string, 255, 255, 255);

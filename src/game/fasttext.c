@@ -45,7 +45,7 @@ static const u8 fast_text_font_kerning[] = {
     /*p*/ 6, /*q*/ 6, /*r*/ 6, /*s*/ 6, /*t*/ 6, /*u*/ 6, /*v*/ 6, /*w*/ 6, /*x*/ 6, /*y*/ 6, /*z*/ 6, /*{*/ 0, /*|*/ 0, /*}*/ 0, /*~*/ 7,     
 };
 
-void drawSmallString_impl(Gfx **dl, int x, int y, const char* string, int r, int g, int b) {
+void drawSmallString_impl_alpha(Gfx **dl, int x, int y, const char* string, int r, int g, int b, int a) {
     int i = 0;
     int xPos = x;
     int yPos = y;
@@ -53,7 +53,7 @@ void drawSmallString_impl(Gfx **dl, int x, int y, const char* string, int r, int
     Gfx *dlHead = *dl;
 
     gDPLoadTextureBlock_4bS(dlHead++, fast_font, G_IM_FMT_IA, 672, 12, 0, G_TX_MIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gDPSetPrimColor(dlHead++, 0, 0, r, g, b, 255);
+    gDPSetPrimColor(dlHead++, 0, 0, r, g, b, a);
     gDPSetCombineMode(dlHead++, G_CC_TEXT, G_CC_TEXT);
     gDPPipeSync(dlHead++);
 
@@ -87,4 +87,8 @@ void drawSmallString_impl(Gfx **dl, int x, int y, const char* string, int r, int
     gDPPipeSync(dlHead++);
 
     *dl = dlHead;
+}
+
+void drawSmallString_impl(Gfx **dl, int x, int y, const char* string, int r, int g, int b) {
+    drawSmallString_impl_alpha(dl, x, y, string, r, g, b, 255);
 }

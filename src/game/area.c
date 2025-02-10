@@ -31,6 +31,7 @@
 #include "f3dex3.h"
 #endif
 
+#include "rgfx_hud.h"
 #include "rgfx_framebuffer.h"
 
 struct SpawnInfo gPlayerSpawnInfos[1];
@@ -408,6 +409,7 @@ void render_game(void) {
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         render_text_labels();
+        rgfx_hud_render();
 #ifdef PUPPYPRINT
         puppyprint_print_deferred();
 #endif
@@ -426,7 +428,7 @@ void render_game(void) {
         } else
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, gBorderHeight, SCREEN_WIDTH,
                           SCREEN_HEIGHT - gBorderHeight);
-        
+
         #ifdef DEBUG_F3DEX3_PROFILER
             draw_f3dex3_profiler();
         #endif
@@ -450,6 +452,7 @@ void render_game(void) {
         }
     } else {
         render_text_labels();
+
 #ifdef PUPPYPRINT
         puppyprint_print_deferred();
 #endif

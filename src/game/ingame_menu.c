@@ -1687,14 +1687,14 @@ LangArray textNormalUpClose = DEFINE_LANGUAGE_ARRAY(
     "STANDARD",
     "STANDARD",
     "STANDARD",
-    "STANDARD");
+    "NORMAL");
 
 LangArray textNormalFixed = DEFINE_LANGUAGE_ARRAY(
     "WIDESCREEN",
     "WIDESCREEN",
     "WIDESCREEN",
     "WIDESCREEN",
-    "WIDESCREEN");
+    "PANORÁMICO");
 
 enum {
     ASPECT_RATIO_SELECTION_NONE,
@@ -1750,7 +1750,7 @@ LangArray textCameraAngleR = DEFINE_LANGUAGE_ARRAY(
     "SET ASPECT RATIO",
     "SET ASPECT RATIO",
     "SET ASPECT RATIO",
-    "SET ASPECT RATIO");
+    "RELACIÓN DE ASPECTO");
 
 void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
     handle_menu_scrolling(MENU_SCROLL_VERTICAL, index, 1, 3);

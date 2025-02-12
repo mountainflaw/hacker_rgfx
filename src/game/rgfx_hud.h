@@ -31,9 +31,11 @@
 enum {
     RGFXHUD_TYPE_BOX,
     RGFXHUD_TYPE_TEXT,
+    RGFXHUD_TYPE_PUPPYPRINT,
     RGFXHUD_TYPE_SPRITE,
     RGFXHUD_TYPE_SCISSOR,
     RGFXHUD_TYPE_SUPERSPRITE,
+    RGFXHUD_TYPE_TRIANGLE,
     RGFXHUD_TYPE_END
 };
 
@@ -74,6 +76,14 @@ typedef struct {
     u8 greyscale;
 } RgfxHudSuperSprite;
 
+// Use the puppyprint font renderer instead of an ingame one.
+
+typedef struct {
+    char *str;
+    s32 align;
+    u8 font;
+} RgfxHudPuppyPrint;
+
 // Unique data.
 
 typedef union {
@@ -81,6 +91,7 @@ typedef union {
     RgfxHudText text;
     RgfxHudSprite sprite;
     RgfxHudSuperSprite superSprite;
+    RgfxHudPuppyPrint puppyPrint;
 } RgfxHudData;
 
 // Base RgfxHud structure.
@@ -99,6 +110,8 @@ void rgfx_hud_create_sprite(RgfxHud *dest, RgfxHud *parent, Texture *texture, s1
 void rgfx_hud_create_sprite_arbitrary(RgfxHud *dest, RgfxHud *parent, Texture *texture, s16 x, s16 y, s16 x1, s16 y1);
 void rgfx_hud_create_sprite_super(RgfxHud *dest, RgfxHud *parent, Texture *texture, s16 x, s16 y, s16 x1, s16 y1, u8 greyscale,u8 r, u8 g, u8 b, u8 a);
 void rgfx_hud_create_scissor(RgfxHud *dest, RgfxHud *parent, s16 x, s16 y, s16 x1, s16 y1);
+void rgfx_hud_create_triangle(RgfxHud *dest, RgfxHud *parent, s16 x, s16 y, f32 size, u8 r, u8 g, u8 b, u8 a);
+void rgfx_hud_create_puppyprint(RgfxHud *dest, RgfxHud *parent, s16 x, s16 y, char *str, s32 align, u8 font);
 
 RgfxHud *rgfx_hud_alloc(u8 cmd);
 

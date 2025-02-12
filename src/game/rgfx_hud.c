@@ -1,5 +1,9 @@
 // RGFX HUD 3.0
+#include <string.h>
 #include <ultra64.h>
+#include "config/config_rom.h"
+#include "types.h"
+#include "game/puppyprint.h"
 #include "include/libc/string.h"
 #include "geo_commands.h"
 #include "types.h"
@@ -178,6 +182,32 @@ void rgfx_hud_create_scissor(RgfxHud *dest, RgfxHud *parent, s16 x, s16 y, s16 x
     dest->parent = parent;
 }
 
+/* Creates a single triangle */
+
+void rgfx_hud_create_triangle(RgfxHud *dest, RgfxHud *parent, s16 x, s16 y, f32 size, u8 r, u8 g, u8 b, u8 a) {
+    dest->type = RGFXHUD_TYPE_TRIANGLE;
+    dest->x = x;
+    dest->y = y;
+    dest->data.text.size = size;
+    dest->data.text.color[0] = r;
+    dest->data.text.color[1] = g;
+    dest->data.text.color[2] = b;
+    dest->data.text.color[3] = a;
+    dest->parent = parent;
+}
+
+/* Creates a puppyprint text line. */
+
+void rgfx_hud_create_puppyprint(RgfxHud *dest, RgfxHud *parent, s16 x, s16 y, char *str, s32 align, u8 font) {
+    dest->type = RGFXHUD_TYPE_PUPPYPRINT;
+    dest->x = x;
+    dest->y = y;
+    dest->data.puppyPrint.str = str;
+    dest->data.puppyPrint.align = align;
+    dest->data.puppyPrint.font = font;
+    dest->parent = parent;
+}
+
 // RENDERING
 
 /* Draw a string using clownfont, ia4 ascii, or fasttext.
@@ -283,16 +313,6 @@ static void draw_string(RgfxHud *text) {
 
 /* Execute the command list. This needs to happen near the end of rendering. */
 
-static void* my_memset(void *s, int c, size_t len) {
-    unsigned char *dst = s;
-    while (len > 0) {
-        *dst = (unsigned char) c;
-        dst++;
-        len--;
-    }
-    return s;
-}
-
 void rgfx_hud_render() {
     RgfxHud *current = &sHudList[0];
     sCommandListHead->type = RGFXHUD_TYPE_END; // terminate the command list
@@ -325,7 +345,10 @@ void rgfx_hud_render() {
                 gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, current->data.sprite.texture);
                 gSPDisplayList(gDisplayListHead++, &dl_hud_img_load_tex_block);
                 gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x1 - 1) << 2, (y1 - 1) << 2, G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10);
-                gSPDisplayList(gDisplayListHead++, &dl_hud_img_end)
+                gSPDisplayList(gDisplayListHead++, &dl_hud_img_end);
+                break;
+            case RGFXHUD_TYPE_SCISSOR:
+                gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, x, y, x1, y1);
                 break;
             case RGFXHUD_TYPE_SUPERSPRITE:
                 gSPDisplayList(gDisplayListHead++, &dl_hud_img_begin);
@@ -346,11 +369,15 @@ void rgfx_hud_render() {
 
                 gSPDisplayList(gDisplayListHead++, &dl_hud_img_load_tex_block);
                 gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x1) << 2, (y1) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                gSPDisplayList(gDisplayListHead++, &dl_hud_img_end)
+                gSPDisplayList(gDisplayListHead++, &dl_hud_img_end);
             break;
-            case RGFXHUD_TYPE_SCISSOR:
-                gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, x, y, x1, y1);
-                break;
+            case RGFXHUD_TYPE_TRIANGLE:
+                create_dl_translation_matrix(MENU_MTX_NOPUSH, x, SCREEN_HEIGHT - y, 0);
+                gDPSetEnvColor(gDisplayListHead++, current->data.text.color[0], current->data.text.color[1], current->data.text.color[2], current->data.text.color[3]);
+                gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
+            break;
+            case RGFXHUD_TYPE_PUPPYPRINT:
+                print_small_text(x, y, current->data.puppyPrint.str, current->data.puppyPrint.align, PRINT_ALL, current->data.puppyPrint.font);
             default:
                 break;
         }
@@ -359,14 +386,17 @@ void rgfx_hud_render() {
 
     gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, gBorderHeight, SCREEN_WIDTH, SCREEN_HEIGHT - gBorderHeight);
     sCommandListHead = &sHudList[0];
-    my_memset(&sHudList[0], RGFXHUD_TYPE_END, sizeof(sHudList));
+    memset(&sHudList[0], RGFXHUD_TYPE_END, sizeof(sHudList));
 }
 
 void test_rgfx() {
     RgfxHud *hud;
 
-    if (RGFXHUD_ALLOC(hud, 1)) {
-        rgfx_hud_create_box(&hud[0], NULL, "TEST", RGFX_CLOWNFONT, RGFX_HUD_TEXT_NONE, 32, 64, 128, 128, 0, 0, 0, 104);
-        //rgfx_hud_create_text(&hud[1], &hud[1], "Testing ASCII mode.", RGFX_ASCII, RGFX_HUD_TEXT_NONE, 32, 32, 1.0f);
+    if (RGFXHUD_ALLOC(hud, 5)) {
+        rgfx_hud_create_box(&hud[0], NULL, "SELECT VIDEO MODE", RGFX_CLOWNFONT, RGFX_HUD_TEXT_NONE, 32, 32, SCREEN_WIDTH - 64, SCREEN_HEIGHT - 64, 255, 255, 255, 104);
+        rgfx_hud_create_text_color(&hud[1], &hud[0], "NTSC",  RGFX_ASCII, RGFX_HUD_TEXT_NONE, 120, 72, 1.0f, 0, 0, 0, 255);
+        rgfx_hud_create_text_color(&hud[2], &hud[1], "PAL50", RGFX_ASCII, RGFX_HUD_TEXT_NONE, 0, 20, 1.0f, 0, 0, 0, 255);
+        rgfx_hud_create_text_color(&hud[3], &hud[2], "PAL60", RGFX_ASCII, RGFX_HUD_TEXT_NONE, 0, 20, 1.0f, 0, 0, 0, 255);
+        rgfx_hud_create_text_color(&hud[4], &hud[3], "MPAL",  RGFX_ASCII, RGFX_HUD_TEXT_NONE, 0, 20, 1.0f, 0, 0, 0, 255);
     }
 }

@@ -10,6 +10,8 @@
 #include "game/level_update.h"
 #include "menu/title_screen.h"
 
+#include "menu/video_select.h"
+
 #include "levels/scripts.h"
 #include "levels/menu/header.h"
 
@@ -24,6 +26,26 @@
 #include "game/print.h"
 
 #include "game/object_list_processor.h"
+
+const LevelScript level_intro_video_select[] = {
+    INIT_LEVEL(),
+    LOAD_GODDARD(),
+    LOAD_BEHAVIOR_DATA(),
+    LOAD_TITLE_SCREEN_BG(),
+    LOAD_YAY0(/*seg*/ SEGMENT_LEVEL_DATA, _debug_level_select_yay0SegmentRomStart, _debug_level_select_yay0SegmentRomEnd),
+    FIXED_LOAD(/*loadAddr*/ _goddardSegmentStart, /*romStart*/ _goddardSegmentRomStart, /*romEnd*/ _goddardSegmentRomEnd),
+    ALLOC_LEVEL_POOL(),
+
+    AREA(/*index*/ 1, intro_geo_video_select),
+    END_AREA(),
+
+    FREE_LEVEL_POOL(),
+    LOAD_AREA(/*area*/ 1),
+    SET_MENU_MUSIC(/*seq*/ SEQ_SOUND_PLAYER),
+    SLEEP(/*frames*/ 16),
+    CALL_LOOP(/*arg*/ 0, /*func*/ menu_update_video_select),
+    JUMP(script_intro_splash_screen),
+};
 
 const LevelScript level_intro_splash_screen[] = {
 #ifdef SKIP_TITLE_SCREEN

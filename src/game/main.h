@@ -7,6 +7,7 @@ enum VIModes {
     MODE_NTSC,
     MODE_MPAL,
     MODE_PAL,
+    MODE_PAL60,
 };
 
 #define THREAD1_STACK 0x100
@@ -107,5 +108,7 @@ void set_vblank_handler(s32 index, struct VblankHandler *handler, OSMesgQueue *q
 void dispatch_audio_sptask(struct SPTask *spTask);
 void exec_display_list(struct SPTask *spTask);
 void change_vi(OSViMode *mode, int width, int height);
+
+void get_audio_frequency();
 
 #endif // MAIN_H

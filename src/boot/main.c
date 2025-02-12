@@ -510,11 +510,23 @@ void change_vi(OSViMode *mode, int width, int height) {
 }
 
 void get_audio_frequency(void) {
+    f32 frequencies[3];
+
+    if (osTvType == OS_TV_NTSC) {
+        frequencies[MODE_NTSC] = 1.0f;
+        frequencies[MODE_MPAL] = 0.9915f;
+        frequencies[MODE_PAL] = 0.9876f;
+    } else {
+        frequencies[MODE_NTSC] = 1.0126f;
+        frequencies[MODE_MPAL] = 1.0086f;
+        frequencies[MODE_PAL] = 1.0f;
+    }
+
     switch (gConfig.tvType) {
 #if defined(VERSION_JP) || defined(VERSION_US)
-    case MODE_NTSC: gConfig.audioFrequency = 1.0f;    break;
+    case MODE_NTSC: gConfig.audioFrequency = 1.0f; break;
     case MODE_MPAL: gConfig.audioFrequency = 0.9915f; break;
-    case MODE_PAL:  gConfig.audioFrequency = 0.9876f; break;
+    case MODE_PAL: case MODE_PAL60:  gConfig.audioFrequency = 0.9876f; break;
 #else
     case MODE_NTSC: gConfig.audioFrequency = 1.0126f; break;
     case MODE_MPAL: gConfig.audioFrequency = 1.0086f; break;
@@ -530,18 +542,15 @@ void thread1_idle(UNUSED void *arg) {
     osCreateViManager(OS_PRIORITY_VIMGR);
     switch (osTvType) {
         case OS_TV_NTSC:
-            //osViSetMode(&osViModeTable[OS_VI_NTSC_LAN1]);
             VI = osViModeTable[OS_VI_NTSC_LAN1];
             gConfig.tvType = MODE_NTSC;
             break;
         case OS_TV_MPAL:
-            //osViSetMode(&osViModeTable[OS_VI_MPAL_LAN1]);
-            VI = osViModeTable[OS_VI_NTSC_LAN1];
+            VI = osViModeTable[OS_VI_MPAL_LAN1];
             gConfig.tvType = MODE_MPAL;
             break;
         case OS_TV_PAL:
-            //osViSetMode(&osViModeTable[OS_VI_PAL_LAN1]);
-            VI = osViModeTable[OS_VI_NTSC_LAN1];
+            VI = osViModeTable[OS_VI_PAL_LAN1];
             gConfig.tvType = MODE_PAL;
             break;
     }

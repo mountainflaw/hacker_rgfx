@@ -29,11 +29,7 @@
 #endif
 
 /* Region */
-#if defined(VERSION_JP) || defined(VERSION_SH)
-    .ascii "J"                  /* NTSC-J (Japan) */
-#else
-    .ascii "E"                  /* NTSC-U (North America) */
-#endif
+    .ascii "\0"                 /* Region free */
 
 #if defined(SRAM)
     .byte  0x32                 /* Version */

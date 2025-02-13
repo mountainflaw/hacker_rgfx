@@ -1,6 +1,8 @@
 // == dialog ==
 // (defines en_dialog_table etc.)
 
+#include "dialog_ids.h"
+
 #undef DEFINE_DIALOG
 #define DEFINE_DIALOG(id, _1, _2, _3, _4, str) \
     static const char dialog_text_ ## id[] = { str };
@@ -16,7 +18,7 @@
 #include DIALOG_FILE
 
 #undef DEFINE_DIALOG
-#define DEFINE_DIALOG(id, _1, _2, _3, _4, _5) &dialog_entry_ ## id,
+#define DEFINE_DIALOG(id, _1, _2, _3, _4, _5) [id] = &dialog_entry_ ## id,
 
 const struct DialogEntry *const DIALOG_TABLE[] = {
 #include DIALOG_FILE

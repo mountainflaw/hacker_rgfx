@@ -57,6 +57,6 @@ Gfx *geo_envfx_main(s32 callContext, struct GraphNode *node, Mat4 mtxf) {
  * Geo function that generates a displaylist for the skybox. Can be assigned
  * as the function of a GraphNodeBackground.
  */
-Gfx *geo_skybox_main(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) {
+Gfx *geo_skybox_main(UNUSED s32 callContext, UNUSED struct GraphNode *node, UNUSED Mat4 *mtx) {
     return NULL;
 }

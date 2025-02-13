@@ -4,7 +4,6 @@
 
 #include "buffers/buffers.h"
 #include "dma_async.h"
-#include "slidec.h"
 #include "game/game_init.h"
 #include "game/main.h"
 #include "game/memory.h"
@@ -12,9 +11,6 @@
 #include "segments.h"
 #ifdef GZIP
 #include <gzip.h>
-#endif
-#if defined(RNC1) || defined(RNC2)
-#include <rnc.h>
 #endif
 #ifdef LZ4T
 #include "lz4t.h"
@@ -416,14 +412,6 @@ void *load_segment_decompress(s32 segment, u8 *srcStart, u8 *srcEnd) {
             osSyncPrintf("start decompress\n");
 #ifdef GZIP
             expand_gzip(compressed, dest, compSize, (u32)size);
-#elif RNC1
-            Propack_UnpackM1(compressed, dest);
-#elif RNC2
-            Propack_UnpackM2(compressed, dest);
-#elif YAY0
-            slidstart(compressed, dest);
-#elif MIO0
-            decompress(compressed, dest);
 #elif LZ4T
             lz4t_unpack(compressed, dest, &asyncCtx);
 #endif

@@ -29,7 +29,7 @@
 #endif
 
 /* Region */
-    .ascii "\0"                 /* Region free */
+    .ascii "J"                 /* Region free */
 
 #if defined(SRAM)
     .byte  0x32                 /* Version */

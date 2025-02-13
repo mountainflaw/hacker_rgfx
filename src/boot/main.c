@@ -511,9 +511,9 @@ void change_vi(OSViMode *mode, int width, int height) {
 
 void get_audio_frequency(void) {
     switch (gConfig.tvType) {
-        case MODE_NTSC: gConfig.audioFrequency = 1.0f; break;
+        case MODE_NTSC: case MODE_PAL60: gConfig.audioFrequency = 1.0f; break;
         case MODE_MPAL: gConfig.audioFrequency = 0.9915f; break;
-        case MODE_PAL: case MODE_PAL60:  gConfig.audioFrequency = 0.9876f; break;
+        case MODE_PAL: gConfig.audioFrequency = 0.9876f; break;
     }
 }
 

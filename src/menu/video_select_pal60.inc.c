@@ -136,7 +136,7 @@ OSViMode gCustomViModePal60Lan1 = {
         // than VSYNC so we choose to leave HSYNC at the nominal value.
         HSYNC(3177, 23),          // hSync
         LEAP(3183, 3181),         // leap
-        HSTART(128, 768),         // hStart
+        HSTART(128 - 20, 768 - 20),         // hStart
         SCALE(2, 0),              // xScale
         VCURRENT(0),              // vCurrent
     },

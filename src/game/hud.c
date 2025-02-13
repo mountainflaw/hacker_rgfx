@@ -18,6 +18,8 @@
 #include "puppycam2.h"
 #include "puppyprint.h"
 
+#include "main.h"
+
 #include "config.h"
 
 /* @file hud.c
@@ -469,10 +471,17 @@ LangArray textTime = DEFINE_LANGUAGE_ARRAY(
  */
 void render_hud_timer(void) {
     char str[20];
+
+    u8 fps = 30;
+
+    if (gConfig.tvType == MODE_PAL) {
+        fps = 25;
+    }
+
     u16 timerValFrames = gHudDisplay.timer;
-    u16 timerMins = timerValFrames / (30 * 60);
-    u16 timerSecs = (timerValFrames - (timerMins * 1800)) / 30;
-    u16 timerFracSecs = ((timerValFrames - (timerMins * 1800) - (timerSecs * 30)) & 0xFFFF) / 3;
+    u16 timerMins = timerValFrames / (fps * 60);
+    u16 timerSecs = (timerValFrames - (timerMins * 1800)) / fps;
+    u16 timerFracSecs = ((timerValFrames - (timerMins * 1800) - (timerSecs * fps)) & 0xFFFF) / 3;
 
     sprintf(str, LANG_ARRAY(textTime), timerMins, timerSecs, timerFracSecs);
     print_text_aligned(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(28), 185, str, TEXT_ALIGN_RIGHT);

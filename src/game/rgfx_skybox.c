@@ -34,6 +34,10 @@ extern Texture wdw_skybox_texture[];
 
 RgfxSkybox gCurrentSkybox;
 
+Gfx *create_skybox_facing_camera(UNUSED s8 player, UNUSED s8 background, UNUSED f32 fov, UNUSED Vec3f pos, UNUSED Vec3f focus) {
+    return NULL;
+}
+
 /*
  * Texture 0
  * Texture 1

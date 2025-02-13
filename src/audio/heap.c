@@ -11,6 +11,8 @@
 #include "game/debug.h"
 #include "string.h"
 
+#include "game/main.h"
+
 struct PoolSplit {
     u32 wantSeq;
     u32 wantBank;
@@ -1341,7 +1343,13 @@ void audio_reset_session(void) {
 #else
     gAiFrequency = osAiSetFrequency(gAudioSessionSettings.frequency);
     gMaxSimultaneousNotes = gAudioSessionSettings.maxSimultaneousNotes;
-    gSamplesPerFrameTarget = ALIGN16(gAiFrequency / 60);
+
+    if (gConfig.tvType == MODE_PAL) {
+        gSamplesPerFrameTarget = ALIGN16(gAiFrequency / 50);
+    } else {
+        gSamplesPerFrameTarget = ALIGN16(gAiFrequency / 60);
+    }
+
 
     gVolume = gAudioSessionSettings.volume;
     gMinAiBufferLength = gSamplesPerFrameTarget - 0x10;

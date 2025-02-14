@@ -1344,11 +1344,7 @@ void audio_reset_session(void) {
     gAiFrequency = osAiSetFrequency(gAudioSessionSettings.frequency);
     gMaxSimultaneousNotes = gAudioSessionSettings.maxSimultaneousNotes;
 
-    if (gConfig.tvType == MODE_PAL) {
-        gSamplesPerFrameTarget = ALIGN16(gAiFrequency / 50);
-    } else {
-        gSamplesPerFrameTarget = ALIGN16(gAiFrequency / 60);
-    }
+    gSamplesPerFrameTarget = ALIGN16(gAiFrequency / 60);
 
 
     gVolume = gAudioSessionSettings.volume;

@@ -1,3 +1,4 @@
+#if 0
 #include "PR/gbi_sgi.h"
 #include <ultra64.h>
 #include "memory.h"
@@ -100,3 +101,4 @@ RgfxWaterMesh *rgfx_create_waterbox_mesh(s16 x, s16 y, s16 z, s16 x1, s16 z1, u3
         }
     }
 }
+#endif

@@ -35,8 +35,14 @@
 #include "profiling.h"
 #include "emutest.h"
 
-// Disables instant input
-// #define DISABLE_INSTANT_INPUT
+/**
+ * Disables instant input.
+ */
+
+/**
+ * Forces a crash when the game starts. Useful for debugging the crash screen.
+ */
+// #define DEBUG_FORCE_CRASH_ON_BOOT
 
 #ifndef DISABLE_INSTANT_INPUT
 // Emulators that the Instant Input patch should not be applied to

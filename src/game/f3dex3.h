@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef F3DEX_GBI_3
+void fresnel_params(s16 *scale, s16 *offset, f32 lo, f32 hi);
+#endif
+
 // F3DEX3 profiler
 #ifdef DEBUG_F3DEX3_PROFILER
 typedef struct {  /* Default performance counters, if no CFG_PROFILING_* is enabled */

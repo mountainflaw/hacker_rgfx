@@ -9,8 +9,8 @@
  *  and in your level scripts (in places marked with *seg*).
  * 
  * TODO: Make this an enum without breaking sm64.ld
- * TODO: Find a way to use these with SEG_ADDRESS in sm64.ld without breaking Fast64
- * TODO: Find a way to use these with SEG_ADDRESS in Makefile.split
+ * TODO: Find a way to use these with SEG_ADDR in sm64.ld without breaking Fast64
+ * TODO: Find a way to use these with SEG_ADDR in Makefile.split
  */
 
 #define SEGMENT_MAIN                 0x00 // | Segment  0 | General Segment, includes most of /src/ (engine, buffers, goddard, audio, etc.)
@@ -46,6 +46,6 @@
 #define SEGMENT_UNKNOWN_30           0x1E // | Segment 30 | Unknown/Unused?
 #define SEGMENT_UNKNOWN_31           0x1F // | Segment 31 | Unknown/Unused?
 
-#define SEG_ADDRESS(segment) ((segment) << 24)
+#define SEG_ADDR(segment) ((segment) << 24)
 
 #endif

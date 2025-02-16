@@ -1,3 +1,4 @@
+#include "segment_names.h"
 #ifdef SKYBOX_SYMBOLS
 #define DEFINE_SKYBOX(symbol, enumeration, rotation, tR, tB, tG, tA, mode) extern Texture symbol##_skybox_texture[];
 #endif
@@ -18,7 +19,7 @@
 #endif
 
 #ifdef SKYBOX_LD
-#define DEFINE_SKYBOX(symbol, enumeration, rotation, tR, tB, tG, tA, mode) YAY0_SEG(symbol##_skybox, 0x0A000000)
+#define DEFINE_SKYBOX(symbol, enumeration, rotation, tR, tB, tG, tA, mode) YAY0_SEG(symbol##_skybox, SEG_ADDR(SEGMENT_SKYBOX))
 #endif
 
 /**

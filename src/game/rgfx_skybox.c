@@ -21,39 +21,23 @@
 #include "f3dex3.h"
 #endif
 
-extern Texture bbh_skybox_texture[];
-extern Texture bidw_skybox_texture[];
-extern Texture bitfs_skybox_texture[];
-extern Texture bits_skybox_texture[];
-extern Texture ccm_skybox_texture[];
-extern Texture cloud_floor_skybox_texture[];
-extern Texture clouds_skybox_texture[];
-extern Texture ssl_skybox_texture[];
-extern Texture water_skybox_texture[];
-extern Texture wdw_skybox_texture[];
+#define SKYBOX_SYMBOLS
+#include "skyboxes.h"
+#undef SKYBOX_SYMBOLS
 
 RgfxSkybox gCurrentSkybox;
 
 /*
  * Texture 0
- * Texture 1
  * Speed 0
- * Speed 1
  * RGB and lerp amount
  * Mode: Multiply or LERP
  */
 
 static RgfxSkybox sSkyboxSettings[] = {
-  { &water_skybox_texture[0],          NULL, 1,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &bitfs_skybox_texture[0],          NULL, 5,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &wdw_skybox_texture[0],            NULL, 1,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &cloud_floor_skybox_texture[0],    NULL, 3,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &ccm_skybox_texture[0],            NULL, 2,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &ssl_skybox_texture[0],            NULL, 1,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &bbh_skybox_texture[0],            NULL, 1,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &bidw_skybox_texture[0],           NULL, 0,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &clouds_skybox_texture[0],         NULL, 2,    0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY },
-  { &bits_skybox_texture[0],           NULL, 25,   0, {0xFF, 0xFF, 0xFF, 0xFF}, MODE_MULTIPLY }
+#define SKYBOX_RENDERER_ENTRY
+#include "skyboxes.h"
+#undef SKYBOX_RENDERER_ENTRY
 };
 
 extern Gfx skybox_Sphere_mesh_tri_0[];

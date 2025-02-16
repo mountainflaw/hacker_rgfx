@@ -6,9 +6,7 @@
 
 typedef struct {
     Texture *sky0;
-    Texture *sky1;
     s16     rotation0;
-    s16     rotation1;
     u8      tint[4];
     u8      mode;
 } RgfxSkybox;

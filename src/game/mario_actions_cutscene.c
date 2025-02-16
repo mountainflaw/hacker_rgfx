@@ -123,17 +123,6 @@ void print_displaying_credits_entry(void) {
                 print_credits_string(CREDIT_TEXT_X_LEFT, strY + 16, *currStrPtr++);
                 numLines = 3;
                 break;
-#ifdef VERSION_EU
-            case 6:
-                print_credits_string(CREDIT_TEXT_X_LEFT, strY + 32, *currStrPtr++);
-                numLines = 3;
-                break;
-            case 7:
-                print_credits_string(CREDIT_TEXT_X_LEFT, strY + 16, *currStrPtr++);
-                print_credits_string(CREDIT_TEXT_X_LEFT, strY + 32, *currStrPtr++);
-                numLines = 3;
-                break;
-#endif
         }
 
         while (numLines-- > 0) {
@@ -2040,13 +2029,8 @@ static void end_peach_cutscene_summon_jumbo_star(struct MarioState *m) {
     play_sound(SOUND_AIR_PEACH_TWINKLE, sEndJumboStarObj->header.gfx.cameraToObject);
 }
 
-#if defined(VERSION_SH)
-    #define TIMER_FADE_IN_PEACH 276
-    #define TIMER_DESCEND_PEACH 400
-#else
     #define TIMER_FADE_IN_PEACH 276
     #define TIMER_DESCEND_PEACH 355
-#endif
 
 // free peach from the stained glass window
 static void end_peach_cutscene_spawn_peach(struct MarioState *m) {
@@ -2151,16 +2135,6 @@ static void end_peach_cutscene_run_to_peach(struct MarioState *m) {
     m->particleFlags |= PARTICLE_DUST;
 }
 
-#ifdef VERSION_SH
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_1 110
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_2 111
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_3 175
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_4 258
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_5 260
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_6 305
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_7 320
-    #define END_PEACH_CUTSCENE_DIALOG_1_TIME_8 510
-#else
     #define END_PEACH_CUTSCENE_DIALOG_1_TIME_1  80
     #define END_PEACH_CUTSCENE_DIALOG_1_TIME_2  81
     #define END_PEACH_CUTSCENE_DIALOG_1_TIME_3 145
@@ -2169,7 +2143,6 @@ static void end_peach_cutscene_run_to_peach(struct MarioState *m) {
     #define END_PEACH_CUTSCENE_DIALOG_1_TIME_6 275
     #define END_PEACH_CUTSCENE_DIALOG_1_TIME_7 290
     #define END_PEACH_CUTSCENE_DIALOG_1_TIME_8 480
-#endif
 
 // dialog 1
 // "Mario!"
@@ -2208,10 +2181,8 @@ static void end_peach_cutscene_dialog_1(struct MarioState *m) {
 
         case END_PEACH_CUTSCENE_DIALOG_1_TIME_5:
             set_cutscene_message(0, 30);
-#ifndef VERSION_JP
             seq_player_lower_volume(SEQ_PLAYER_LEVEL, 60, 40);
             play_sound(SOUND_PEACH_MARIO, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
 
         case END_PEACH_CUTSCENE_DIALOG_1_TIME_6:
@@ -2221,9 +2192,7 @@ static void end_peach_cutscene_dialog_1(struct MarioState *m) {
 
         case END_PEACH_CUTSCENE_DIALOG_1_TIME_7:
             set_cutscene_message(1, 60);
-#ifndef VERSION_JP
             play_sound(SOUND_PEACH_POWER_OF_THE_STARS, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
 
         case END_PEACH_CUTSCENE_DIALOG_1_TIME_8:
@@ -2241,19 +2210,11 @@ static void end_peach_cutscene_dialog_1(struct MarioState *m) {
 #undef END_PEACH_CUTSCENE_DIALOG_1_TIME_7
 #undef END_PEACH_CUTSCENE_DIALOG_1_TIME_8
 
-#if defined(VERSION_SH)
-    #define END_PEACH_CUTSCENE_DIALOG_2_TIME_1  39
-    #define END_PEACH_CUTSCENE_DIALOG_2_TIME_2  65
-    #define END_PEACH_CUTSCENE_DIALOG_2_TIME_3 105
-    #define TIMER_SOMETHING_SPECIAL            170
-    #define TIMER_PEACH_KISS                   250
-#else
     #define END_PEACH_CUTSCENE_DIALOG_2_TIME_1  29
     #define END_PEACH_CUTSCENE_DIALOG_2_TIME_2  45
     #define END_PEACH_CUTSCENE_DIALOG_2_TIME_3  75
     #define TIMER_SOMETHING_SPECIAL            130
     #define TIMER_PEACH_KISS                   200
-#endif
 
 // dialog 2
 // "...and it's all thanks to you!"
@@ -2265,9 +2226,7 @@ static void end_peach_cutscene_dialog_2(struct MarioState *m) {
     switch (m->actionTimer) {
         case END_PEACH_CUTSCENE_DIALOG_2_TIME_1:
             set_cutscene_message(2, 30);
-#ifndef VERSION_JP
             play_sound(SOUND_PEACH_THANKS_TO_YOU, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
 
         case END_PEACH_CUTSCENE_DIALOG_2_TIME_2:
@@ -2276,16 +2235,12 @@ static void end_peach_cutscene_dialog_2(struct MarioState *m) {
 
         case END_PEACH_CUTSCENE_DIALOG_2_TIME_3:
             set_cutscene_message(3, 30);
-#ifndef VERSION_JP
             play_sound(SOUND_PEACH_THANK_YOU_MARIO, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
 
         case TIMER_SOMETHING_SPECIAL:
             set_cutscene_message(4, 40);
-#ifndef VERSION_JP
             play_sound(SOUND_PEACH_SOMETHING_SPECIAL, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
 
         case TIMER_PEACH_KISS:
@@ -2376,9 +2331,7 @@ static void end_peach_cutscene_star_dance(struct MarioState *m) {
         case 120: sPeachManualBlinkTime = 0; break;
 
         case 140:
-#ifndef VERSION_JP
             seq_player_unlower_volume(SEQ_PLAYER_LEVEL, 60);
-#endif
             play_cutscene_music(SEQUENCE_ARGS(15, SEQ_EVENT_CUTSCENE_CREDITS));
             break;
 
@@ -2406,9 +2359,7 @@ static void end_peach_cutscene_dialog_3(struct MarioState *m) {
             sEndToadAnims[END_TOAD_INDEX_EAST] = TOAD_ANIM_EAST_NOD_THEN_TURN;
             sPeachIsBlinking = TRUE;
             set_cutscene_message(5, 30);
-#ifndef VERSION_JP
             play_sound(SOUND_PEACH_BAKE_A_CAKE, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
 
         case 55:
@@ -2417,9 +2368,7 @@ static void end_peach_cutscene_dialog_3(struct MarioState *m) {
 
         case 130:
             set_cutscene_message(7, 50);
-#ifndef VERSION_JP
             play_sound(SOUND_PEACH_FOR_MARIO, sEndPeachObj->header.gfx.cameraToObject);
-#endif
             break;
     }
 
@@ -2441,9 +2390,7 @@ static void end_peach_cutscene_run_to_castle(struct MarioState *m) {
 
     if (m->actionTimer == 95) {
         set_cutscene_message(8, 40);
-#ifndef VERSION_JP
         play_sound(SOUND_PEACH_MARIO2, sEndPeachObj->header.gfx.cameraToObject);
-#endif
     }
     if (m->actionTimer == 389) {
         advance_cutscene_step(m);

@@ -32,6 +32,7 @@
  * @param tB          - Blue tint.
  * @param tA          - Alpha channel, used for MODE_LERP as the lerp amount.
  * @param mode        - Determines if the skybox will be multiplied with MODE_TINT by the tint colors, or lerped to the tint colors with MODE_LERP, with the amount of the alpha channel.
+*/
 
 DEFINE_SKYBOX(water,        BACKGROUND_OCEAN_SKY,       1,    0xFF, 0xFF, 0xFF, 0xFF, MODE_MULTIPLY)
 DEFINE_SKYBOX(bitfs,        BACKGROUND_FLAMING_SKY,     5,    0xFF, 0xFF, 0xFF, 0xFF, MODE_MULTIPLY)

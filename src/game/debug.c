@@ -168,7 +168,6 @@ void print_mapinfo(void) {
     water = find_water_level(gCurrentObject->oPosX, gCurrentObject->oPosZ);
 
     print_debug_top_down_normal("mapinfo", 0);
-#ifndef VERSION_EU
     print_debug_top_down_mapinfo("area %x", area);
     print_debug_top_down_mapinfo("wx   %d", gCurrentObject->oPosX);
     //! Fat finger: programmer hit tab instead of space. Japanese
@@ -188,7 +187,6 @@ void print_mapinfo(void) {
     if (gCurrentObject->oPosY < water) {
         print_debug_top_down_mapinfo("water %d", water);
     }
-#endif
 }
 
 void print_checkinfo(void) {
@@ -344,9 +342,6 @@ UNUSED static void try_change_debug_page(void) {
  * sDebugSysCursor. This is used to adjust enemy and effect behaviors
  * on the fly. (unused)
  */
-#ifdef VERSION_EU
-UNUSED static
-#endif
 void try_modify_debug_controls(void) {
     s32 modifier;
 
@@ -476,7 +471,6 @@ void try_do_mario_debug_object_spawn(void) {
 
 // TODO: figure out what this is
 void debug_print_obj_move_flags(void) {
-#ifndef VERSION_EU // TODO: Is there a better way to diff this? static EU doesn't seem to work.
     if (gCurrentObject->oMoveFlags & OBJ_MOVE_LANDED) {
         print_debug_top_down_objectinfo("BOUND   %x", gCurrentObject->oMoveFlags);
     }
@@ -504,7 +498,6 @@ void debug_print_obj_move_flags(void) {
     if (gCurrentObject->oMoveFlags & OBJ_MOVE_OUT_SCOPE) {
         print_debug_top_down_objectinfo("OUT SCOPE %x", gCurrentObject->oMoveFlags);
     }
-#endif
 }
 
 // unused, what is this?

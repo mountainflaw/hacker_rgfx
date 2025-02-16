@@ -90,6 +90,19 @@ extern s32 	osVersion;
 extern u32	osMemSize;	/* Memory Size */
 extern s32	osAppNMIBuffer[];
 
+#ifdef BBPLAYER
+extern u32 __osBbEepromAddress;
+extern u32 __osBbEepromSize;
+extern u32 __osBbSramAddress;
+extern u32 __osBbSramSize;
+extern u32 __osBbFlashAddress;
+extern u32 __osBbFlashSize;
+extern u32 __osBbPakAddress[4];
+extern u32 __osBbPakSize;
+extern u32 __osBbIsBb;
+extern u32 __osBbHackFlags;
+#endif
+
 extern u64	osClockRate;
 
 extern OSIntMask __OSGlobalIntMask;	/* global interrupt mask */

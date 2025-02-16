@@ -33,7 +33,7 @@ ifeq      ($(CONSOLE),n64)
   INCLUDE_DIRS   += include/n64
   LIBS_DIR       := lib/n64
 else ifeq ($(CONSOLE),bb)
-  INCLUDE_DIRS   += include/ique
+  INCLUDE_DIRS   += include/n64
   LIBS_DIR       := lib/ique
   DEFINES        += BBPLAYER=1
 endif
@@ -852,7 +852,7 @@ $(BUILD_DIR)/sm64_prelim.elf: $(BUILD_DIR)/sm64_prelim.ld
 
 $(BUILD_DIR)/goddard.txt: $(BUILD_DIR)/sm64_prelim.elf
 	$(call print,Getting Goddard size...)
-	$(V)python3 tools/getGoddardSize.py $(BUILD_DIR)/sm64_prelim.map $(VERSION)
+	$(V)python3 tools/getGoddardSize.py $(BUILD_DIR)/sm64_prelim.map $(VERSION) $(CONSOLE)
 
 $(BUILD_DIR)/asm/debug/map.o: asm/debug/map.s $(BUILD_DIR)/sm64_prelim.elf
 	$(call print,Assembling:,$<,$@)

@@ -1,3 +1,5 @@
+![](https://i.imgur.com/b0VwLUV.png)
+
 # SM64 RGFX
 
 This is a fork of HackerSM64, which itself is a fork of UltraSM64. It prioritizes cleaning up code duplication, adding and improving modding support, and to put it bluntly: removing dumb code.
@@ -47,7 +49,7 @@ Thanks to Frame#5375 and AloXado320 for also helping with silhouette stuff
         - F3DEX3 also fixes point light behavior when close to triangles.
 - See `src/game/f3dex3.c` for more details.
 
-** RGFX Graphics Stack
+**RGFX Graphics Stack:**
 
 - 3D skyboxes `rgfx_skybox.c`
   - Also includes day/night system, can work with the optional F3DEX3 lighting engine.

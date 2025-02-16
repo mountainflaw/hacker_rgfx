@@ -21,6 +21,18 @@
 #define DEFINE_SKYBOX(symbol, enumeration, rotation, tR, tB, tG, tA, mode) YAY0_SEG(symbol##_skybox, 0x0A000000)
 #endif
 
+/**
+ * @brief Defines skybox properties.
+ *
+ * @param symbol      - Filename of the skybox used for symbol generation.
+ * @param enumeration - Name used for the enum.
+ * @param rotation    - Rotation speed.
+ * @param tR          - Red tint.
+ * @param tG          - Green tint.
+ * @param tB          - Blue tint.
+ * @param tA          - Alpha channel, used for MODE_LERP as the lerp amount.
+ * @param mode        - Determines if the skybox will be multiplied with MODE_TINT by the tint colors, or lerped to the tint colors with MODE_LERP, with the amount of the alpha channel.
+
 DEFINE_SKYBOX(water,        BACKGROUND_OCEAN_SKY,       1,    0xFF, 0xFF, 0xFF, 0xFF, MODE_MULTIPLY)
 DEFINE_SKYBOX(bitfs,        BACKGROUND_FLAMING_SKY,     5,    0xFF, 0xFF, 0xFF, 0xFF, MODE_MULTIPLY)
 DEFINE_SKYBOX(wdw,          BACKGROUND_UNDERWATER_CITY, 1,    0xFF, 0xFF, 0xFF, 0xFF, MODE_MULTIPLY)

@@ -47,6 +47,21 @@ Thanks to Frame#5375 and AloXado320 for also helping with silhouette stuff
         - F3DEX3 also fixes point light behavior when close to triangles.
 - See `src/game/f3dex3.c` for more details.
 
+** RGFX Graphics Stack
+
+- 3D skyboxes `rgfx_skybox.c`
+  - Also includes day/night system, can work with the optional F3DEX3 lighting engine.
+- Custom HUD layout engine `rgfx_hud.c`
+  - Enables you to place elements with parents and children, allowing for easy animation code.
+  - Supports drawing sprites, boxes, text, scissoring, and more.
+  - Built in framebuffer effects system. `rgfx_framebuffer.c`
+    - Supports motion blur, and black and white.
+  - Planned: `rgfx_dynamic.c`
+    - Planned replacement for moving texture system.
+    - Will allow more efficient UV scrolling with F3DEX3.
+    - Fast64 integration.
+    - Based within geo layouts, so no more level switches that can cause memory issues.
+
 **Collision:**
 - Slope fix and exposed ceilings fix
 - No false ledgegrabs fix *
@@ -70,8 +85,6 @@ Thanks to Frame#5375 and AloXado320 for also helping with silhouette stuff
 - Removed course-specific camera processing *
 - Ability to set Mario's movement speed when hanging from a ceiling *
 - Tighter hanging controls (Mario will face the direction of the analog stick directly while hanging from a ceiling) *
-- reonucam3: custom camera by Reonu. This is included as a .patch file in the enhancements folder, you need to apply it if you want this camera.
-  This video shows a rundown of the features: https://youtu.be/TQNkznX9Z3k
 - Ability to disable Mario getting suck in snow or sand
 
 **Hacker QOL:**

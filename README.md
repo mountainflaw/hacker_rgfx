@@ -1,16 +1,17 @@
-# ![](https://i.imgur.com/CeOukzk.gif) HackerSM64 ![](https://i.imgur.com/s0LUbTo.gif)
+# SM64 RGFX
 
-**AFTER CLONING THE REPO, CHECK OUT THE `include/config` FOLDER BEFORE ANYTHING ELSE! THERE'S A LOT OF STUFF IN THIS REPO THAT CAN BE TOGGLED THERE.**
+This is a fork of HackerSM64, which itself is a fork of UltraSM64. It prioritizes cleaning up code duplication, adding and improving modding support, and to put it bluntly: removing dumb code.
 
-HackerSM64 now has a discord server! https://discord.gg/brETAakcXr
+club rgfx Discord server: https://discord.gg/F5Hy9dBFbM
+
+Check out the `include/config` folder, there's a couple commonly used options in there.
 
 This repo requires BOTH a US ROM and a JP ROM in order to build. Place baserom.us.z64 in the repo as usual and ALSO include baserom.jp.z64.
 
-This repo needs gcc in order to be able to build it. To install it, run `sudo apt install gcc-mips-linux-gnu`
-
-This is a fork of the ultrasm64 repo by CrashOveride which includes the following commonly used patches (patches marked with `*` are toggleable in the config files):
+This repo needs gcc in order to be able to build it. To install it, run `sudo apt install gcc-mips-linux-gnu`.
 
 **Credits**
+- red/mountainflaw: RGFX stack, cleaned up repository, build system improvements, F3DEX3 game implementation, skyboxes.h defines.
 - **ArcticJaguar725**: Most audio configuration and layout changes, colored ia4 text, floombas, various bugfixes, and more
 - **CowQuack**: Adjustable skybox sizes, area-specific skybox function
 - **thecozies**: Water surface types, general maintenance, and time
@@ -45,9 +46,6 @@ Thanks to Frame#5375 and AloXado320 for also helping with silhouette stuff
         - F3DEX3 fixes point lights with kc < 8, allowing for more expressive lighting.
         - F3DEX3 also fixes point light behavior when close to triangles.
 - See `src/game/f3dex3.c` for more details.
-
-**Puppycam**
-- Puppycam is available on the master branch now, you can toggle it in `config/config_camera.h`. *
 
 **Collision:**
 - Slope fix and exposed ceilings fix
@@ -115,9 +113,7 @@ Thanks to Frame#5375 and AloXado320 for also helping with silhouette stuff
 **Neat Misc. Changes:**
 - Instant Input patch by Wiseguy (Removes all input lag caused by plugins supporting framebuffer)
   - This means that you'll have to do your framebuffer effects on buffer 0 for emulator, but NOT for console. You can use the `gEmulator` variable to check for console when doing your framebuffer effects.
-- Widescreen (16:9) support toggleable by pressing `L` in the pause menu. *
-- S2DEX engine by someone2639! To use it, compile with `make TEXT_ENGINE=s2dex_text_engine` or just set `TEXT_ENGINE` to `s2dex_text_engine` in the makefile.
-- ia8 (64x64) coins, the vanilla coin texture is upgraded to accomodate. *
+- Widescreen (16:9) support: Replaces fixed cam in the pause menu. *
 - ia8 (64x64) 30 FPS coins (Textures by InTheBeef, cleaned up by Arceveti). *
 - Floombas! Simply just retextured goombas with customizable behaviors (does not overwrite standard goombas). *
 - HD texture support for intro splash screen (with floombas if enabled). *
@@ -161,14 +157,11 @@ The repository supports UNFLoader for debugging.
 To build with UNF, run make with ``UNF=1``.
 
 Further instructions can be found at the [official repository](https://github.com/buu342/N64-UNFLoader)
-
 **NOTE: Closing the UNFLoader window will result in your game eventually hanging due to lacking a USB device to send messages to, so beware of that**
 
 ## Multi-Save support
 The repository supports SRAM in addition to EEPROM. The standard save data functions are #ifdef'd to accommedate this.
 To build with SRAM support, run make with ``SAVETYPE=sram``.
-
-I may attempt FlashRAM in the future.
 
 ## Multi-Console support
 The repository supports targeting the iQue Player in addition to the N64. The iQue libultra is ***NOT*** compatible with N64 in many ways, so it is currently NOT possible to have one build for both consoles.
@@ -176,30 +169,9 @@ To target iQue, run make with the ``CONSOLE=bb`` argument.
 
 ## Compression
 
-The repo also supports RNC (Rob Northen Compression). RNC has two methods.
-
-Method 1 is designed to compress as small as possible, while method 2 is designed so that decompression is as fast as possible.
-
-Method 1 is the current default, and is the best all-rounder in terms of speed and ratio.
-
-Both methods are fast. Method 1 has better compression than 2, so I suggest using method 1 if using RNC.
-
-To switch to RNC, run make with either ``COMPRESS=rnc1`` or ``COMPRESS=rnc2``, depending on preferred method.
-
-The repository also supports using DEFLATE compression. This boasts a better compression ratio, but at a slight cost to load times.
-On average I'd estimate that the bottleneck on decompression is about 1-2 seconds.
-
-To switch to gzip, run make with the ``COMPRESS=gzip`` argument.
-
-The repo also supports gziping with ``libdeflate-gzip``. This compresses at a slightly better ratio than standard ``gzip``, with no real downside from a decompression standpoint.
-
-To use ``libdeflate-gzip``, first clone the [repo](https://github.com/ebiggers/libdeflate), then `make` and `make install` it.
-
-Then run make for sm64 with ``GZIPVER=libdef`` in addition to ``COMPRESS=gzip``
-
-The repo also supports building a ROM with no compression.
-This is not recommended as it increases ROM size significantly, with little point other than load times decreased to almost nothing.
-To switch to no compression, run make with the ``COMPRESS=uncomp`` argument.
+Two compression settings are supported:
+  - LZ4T by aglab2: Fastest compression and decompression possible on N64. Compresses better than the original MIO0 and YAY0, while being much faster.
+  - GZIP: Best compression to speed ratio possible on N64. Compresses much better than LZ4T.
 
 ## FAQ
 

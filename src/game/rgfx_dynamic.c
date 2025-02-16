@@ -90,6 +90,8 @@ RgfxWaterMesh *rgfx_create_waterbox_mesh(s16 x, s16 y, s16 z, s16 x1, s16 z1, u3
 
     if (subdiv > MAX_SUBDIV) {
         subdiv = MAX_SUBDIV;
+    } else if (subdiv == 0) {
+        subdiv = 1;
     }
 
     for (u16 i = 0; i <= subdiv; ++i) {
